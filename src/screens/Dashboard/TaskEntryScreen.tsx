@@ -26,6 +26,7 @@ import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks } from '@/context/TaskContext';
 import { useAuth } from '@/context/AuthContext';
 import { ThemedText } from '@/components/common/themed-text';
+import { GradientButton } from '@/components/common/GradientButton';
 import { ThemedView } from '@/components/common/themed-view';
 import { googleCalendarService } from '@/services/GoogleCalendarService';
 import { CustomAlert } from '@/components/common/themed-dialog';
@@ -55,13 +56,16 @@ function SectionCard({ title, icon, children, delay = 0, theme }: { title: strin
   );
 }
 
-const Chip = ({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) => (
+const Chip = ({ label, selected, onPress, theme }: { label: string; selected: boolean; onPress: () => void; theme: any }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[styles.chip, selected && styles.chipSelected]}
+    style={[
+      styles.chip, 
+      { backgroundColor: selected ? theme.accent : theme.surface, borderColor: selected ? theme.accent : theme.border, borderWidth: 1 }
+    ]}
     activeOpacity={0.8}
   >
-    <ThemedText style={[styles.chipText, selected && styles.chipTextSelected]}>
+    <ThemedText style={[styles.chipText, { color: selected ? 'white' : theme.textSecondary }]}>
       {label}
     </ThemedText>
   </TouchableOpacity>
@@ -291,7 +295,7 @@ export default function AdvancedTaskEntryScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView transparent style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
 
       <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16) }]}>
@@ -300,7 +304,7 @@ export default function AdvancedTaskEntryScreen() {
             <Ionicons name="close-outline" size={28} color={theme.text} />
           </TouchableOpacity>
           <View style={styles.titleWrapper}>
-            <ThemedText style={styles.headerTitleText}>{isEditing ? 'Edit Activity' : 'New Activity'}</ThemedText>
+            <ThemedText style={[styles.headerTitleText, { color: theme.primary }]}>{isEditing ? 'Edit Activity' : 'New Activity'}</ThemedText>
           </View>
           <View style={styles.headerRight}>
             {isEditing && (
@@ -318,7 +322,7 @@ export default function AdvancedTaskEntryScreen() {
           <SectionCard title="Activity Info" icon="create-outline" delay={0} theme={theme}>
             <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
               <View style={styles.inputSection}>
-                <ThemedText style={styles.inputLabel}>Activity Name</ThemedText>
+                <ThemedText style={[styles.inputLabel, { color: theme.textSecondary }]}>Activity Name</ThemedText>
                 <TextInput
                   ref={titleInputRef}
                   style={[styles.titleInput, { color: theme.text }]}
@@ -339,18 +343,18 @@ export default function AdvancedTaskEntryScreen() {
 
               <View style={styles.unifiedScheduleRow}>
                 <View style={styles.dateCol}>
-                  <ThemedText style={styles.inputLabel}>Date</ThemedText>
+                  <ThemedText style={[styles.inputLabel, { color: theme.textSecondary }]}>Date</ThemedText>
                   <TouchableOpacity style={styles.inlineDateRow} onPress={openDatePicker}>
                     <Ionicons name="calendar-outline" size={16} color={theme.accent} />
                     <ThemedText style={[styles.inlineDateText, { color: theme.text }]}>{formatDate(taskDate)}</ThemedText>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.allDayCol}>
-                  <ThemedText style={styles.inputLabel}>All Day</ThemedText>
+                  <ThemedText style={[styles.inputLabel, { color: theme.textSecondary }]}>All Day</ThemedText>
                   <Switch
                     value={isAllDay}
                     onValueChange={setIsAllDay}
-                    trackColor={{ false: '#eeebe3', true: '#0052ff' }}
+                    trackColor={{ false: theme.secondary + '33', true: theme.accent }}
                     style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }], marginTop: -4 }}
                   />
                 </View>
@@ -360,18 +364,18 @@ export default function AdvancedTaskEntryScreen() {
                 {isAllDay ? (
                   <TouchableOpacity style={[styles.allDayReminderRow, { backgroundColor: theme.secondary + '15' }]} onPress={() => openTimePicker('allDay')}>
                     <Ionicons name="notifications-outline" size={16} color={theme.accent} />
-                    <ThemedText style={styles.label}>Remind me at:</ThemedText>
+                    <ThemedText style={[styles.label, { color: theme.textSecondary }]}>Remind me at:</ThemedText>
                     <ThemedText style={[styles.inlineTimeInput, { color: theme.text }]}>{formatTime(allDayReminderTime)}</ThemedText>
                   </TouchableOpacity>
                 ) : (
                   <View style={styles.timePickerRow}>
                     <TouchableOpacity style={styles.timeCol} onPress={() => openTimePicker('start')}>
-                      <ThemedText style={styles.inputLabel}>Start</ThemedText>
+                      <ThemedText style={[styles.inputLabel, { color: theme.textSecondary }]}>Start</ThemedText>
                       <ThemedText style={[styles.inlineTimeInput, { color: theme.text }]}>{formatTime(startTime)}</ThemedText>
                     </TouchableOpacity>
-                    <Ionicons name="arrow-forward" size={16} color="#b7c6c2" style={{ marginTop: 20 }} />
+                    <Ionicons name="arrow-forward" size={16} color={theme.textSecondary} style={{ marginTop: 20 }} />
                     <TouchableOpacity style={styles.timeCol} onPress={() => openTimePicker('end')}>
-                      <ThemedText style={styles.inputLabel}>End</ThemedText>
+                      <ThemedText style={[styles.inputLabel, { color: theme.textSecondary }]}>End</ThemedText>
                       <ThemedText style={[styles.inlineTimeInput, { color: theme.text }]}>{formatTime(endTime)}</ThemedText>
                     </TouchableOpacity>
                   </View>
@@ -404,7 +408,7 @@ export default function AdvancedTaskEntryScreen() {
           {/* 2. Classification Section */}
           <SectionCard title="Classification" icon="options-outline" delay={100} theme={theme}>
             <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-              <ThemedText style={styles.label}>Priority Level</ThemedText>
+              <ThemedText style={[styles.label, { color: theme.textSecondary }]}>Priority Level</ThemedText>
               <View style={styles.priorityRow}>
                 {(['Low', 'Medium', 'High'] as Priority[]).map((p) => {
                   const isActive = priority === p;
@@ -426,7 +430,7 @@ export default function AdvancedTaskEntryScreen() {
                 })}
               </View>
 
-              <ThemedText style={[styles.label, { marginTop: 24 }]}>Categories</ThemedText>
+              <ThemedText style={[styles.label, { color: theme.textSecondary, marginTop: 24 }]}>Categories</ThemedText>
               <View style={styles.chipRow}>
                 {categories.map((cat) => (
                   <Chip
@@ -434,6 +438,7 @@ export default function AdvancedTaskEntryScreen() {
                     label={cat}
                     selected={category === cat}
                     onPress={() => setCategory(cat)}
+                    theme={theme}
                   />
                 ))}
                 {!isAddingCategory ? (
@@ -454,7 +459,7 @@ export default function AdvancedTaskEntryScreen() {
                       onSubmitEditing={handleAddCategory}
                     />
                     <TouchableOpacity onPress={handleAddCategory}>
-                      <Ionicons name="checkmark-circle" size={24} color="#10b981" />
+                      <Ionicons name="checkmark-circle" size={24} color={theme.success} />
                     </TouchableOpacity>
                   </Animated.View>
                 )}
@@ -465,7 +470,7 @@ export default function AdvancedTaskEntryScreen() {
           {/* 3. Reminder Section - Simplified animation to prevent flickering */}
           <SectionCard title="Reminder" icon="notifications-outline" delay={150} theme={theme}>
             <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-              <ThemedText style={styles.label}>Notify Me</ThemedText>
+              <ThemedText style={[styles.label, { color: theme.textSecondary }]}>Notify Me</ThemedText>
               <View style={styles.chipRow}>
                 {(['None', 'At Time', '5m Before', '10m Before', '1h Before', 'Custom'] as ReminderOption[]).map((opt) => (
                   <Chip
@@ -473,6 +478,7 @@ export default function AdvancedTaskEntryScreen() {
                     label={opt}
                     selected={reminder === opt}
                     onPress={() => setReminder(opt)}
+                    theme={theme}
                   />
                 ))}
               </View>
@@ -483,7 +489,7 @@ export default function AdvancedTaskEntryScreen() {
                   exiting={FadeOut.duration(200)}
                   style={styles.customReminderBox}
                 >
-                  <ThemedText style={styles.label}>Time Before Event</ThemedText>
+                  <ThemedText style={[styles.label, { color: theme.textSecondary }]}>Time Before Event</ThemedText>
                   <View style={styles.customReminderInputsGrid}>
                     <View style={[styles.timeInputBox, { backgroundColor: theme.secondary + '15' }]}>
                       <TextInput
@@ -518,7 +524,7 @@ export default function AdvancedTaskEntryScreen() {
             <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
               {subtasks.map((item) => (
                 <View key={item.id} style={[styles.subtaskItem, { backgroundColor: theme.secondary + '10' }]}>
-                  <Ionicons name="ellipse-outline" size={20} color="#b7c6c2" />
+                  <Ionicons name="ellipse-outline" size={20} color={theme.textSecondary} />
                   <ThemedText style={[styles.subtaskText, { color: theme.text }]}>{item.text}</ThemedText>
                   <TouchableOpacity onPress={() => setSubtasks(subtasks.filter(s => s.id !== item.id))}>
                     <Ionicons name="close-circle-outline" size={20} color={theme.accent} />
@@ -529,12 +535,12 @@ export default function AdvancedTaskEntryScreen() {
                 <TextInput
                   style={[styles.addSubtaskInput, { backgroundColor: theme.secondary + '15', color: theme.text }]}
                   placeholder="Add subtask..."
-                  placeholderTextColor="#b7c6c2"
+                  placeholderTextColor={theme.textSecondary}
                   value={newSubtask}
                   onChangeText={setNewSubtask}
                   onSubmitEditing={handleAddSubtask}
                 />
-                <TouchableOpacity onPress={handleAddSubtask} style={[styles.addSubtaskBtn, { backgroundColor: theme.primary }]}>
+                <TouchableOpacity onPress={handleAddSubtask} style={[styles.addSubtaskBtn, { backgroundColor: theme.accent }]}>
                   <Ionicons name="add" size={24} color="white" />
                 </TouchableOpacity>
               </View>
@@ -546,12 +552,11 @@ export default function AdvancedTaskEntryScreen() {
       </KeyboardAvoidingView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave} activeOpacity={0.8}>
-          <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.blurContainer}>
-            <ThemedText style={styles.saveButtonText}>{isEditing ? 'Update Activity' : 'Create Activity'}</ThemedText>
-            <Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color="#0052ff" />
-          </BlurView>
-        </TouchableOpacity>
+        <GradientButton 
+          title={isEditing ? 'Update Activity' : 'Create Activity'}
+          icon={<Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color="#020617" />}
+          onPress={handleSave}
+        />
       </View>
 
       <CustomAlert
@@ -584,7 +589,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   inputSection: { marginBottom: 16 },
-  inputLabel: { ...Typography.label, color: '#b7c6c2', marginBottom: 8, fontSize: 10 },
+  inputLabel: { ...Typography.label, marginBottom: 8, fontSize: 10 },
   titleInput: { fontSize: 24, fontFamily: Fonts.black, marginBottom: 4 },
   descInput: { fontSize: 16, fontFamily: Fonts.regular, minHeight: 40, textAlignVertical: 'top' },
   unifiedScheduleRow: { flexDirection: 'row', gap: 20, paddingTop: 16 },
@@ -600,7 +605,7 @@ const styles = StyleSheet.create({
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12, paddingLeft: 4 },
   sectionIconContainer: { width: 32, height: 32, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
   sectionHeaderText: { fontSize: 16, fontFamily: Fonts.black, textTransform: 'none', letterSpacing: 0.5 },
-  label: { ...Typography.label, color: '#b7c6c2', marginBottom: 4, fontSize: 10 },
+  label: { ...Typography.label, marginBottom: 4, fontSize: 10 },
   priorityRow: { flexDirection: 'row', gap: 10, marginTop: 8 },
   priorityBtn: { flex: 1, height: 52, borderRadius: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   priorityDot: { width: 8, height: 8, borderRadius: 4 },
@@ -613,19 +618,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(183, 198, 194, 0.15)',
   },
   chipSelected: {
-    backgroundColor: '#0052ff',
-    borderColor: '#0052ff',
   },
   chipText: { fontSize: 14, fontFamily: Fonts.bold },
   chipTextSelected: { color: '#ffffff' },
   addCategoryChip: { width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-  customCategoryInputRow: { flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 12, paddingHorizontal: 10, borderWidth: 1, borderColor: '#0052ff' },
+  customCategoryInputRow: { flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 12, paddingHorizontal: 10, borderWidth: 1 },
   customCategoryInput: { width: 80, height: 40, fontFamily: Fonts.bold, fontSize: 12 },
   customReminderBox: { marginTop: 16, paddingTop: 16 },
   customReminderInputsGrid: { flexDirection: 'row', gap: 12, marginTop: 8 },
   timeInputBox: { flex: 1, flexDirection: 'row', alignItems: 'center', borderRadius: 16, paddingHorizontal: 16, height: 52 },
   timeInput: { flex: 1, fontFamily: Fonts.black, fontSize: 18 },
-  timeInputUnit: { fontSize: 12, fontFamily: Fonts.black, color: '#b7c6c2', marginLeft: 8 },
+  timeInputUnit: { fontSize: 12, fontFamily: Fonts.black, marginLeft: 8 },
   subtaskItem: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12, padding: 12, borderRadius: 16 },
   subtaskText: { flex: 1, fontSize: 15, fontFamily: Fonts.regular },
   addSubtaskContainer: { flexDirection: 'row', gap: 12, marginTop: 12 },
@@ -636,7 +639,6 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#0052ff',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     overflow: 'hidden',
   },
@@ -647,5 +649,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  saveButtonText: { color: '#0052ff', fontSize: 18, fontFamily: Fonts.black },
+  saveButtonText: { fontSize: 18, fontFamily: Fonts.black },
 });

@@ -40,18 +40,18 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
         style={styles.centeredView}
       >
         <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose} />
-        <View style={styles.modalView}>
+        <View style={[styles.modalView, { backgroundColor: theme.background }]}>
           <View style={styles.headerRow}>
-            <ThemedText style={styles.modalHeading}>New Activity</ThemedText>
+            <ThemedText style={[styles.modalHeading, { color: theme.primary }]}>New Activity</ThemedText>
             <TouchableOpacity onPress={onClose} style={styles.closeCircle}>
-              <Ionicons name="close" size={24} color="#171e19" />
+              <Ionicons name="close" size={24} color={theme.primary} />
             </TouchableOpacity>
           </View>
           
           <View style={styles.inputWrapper}>
-            <ThemedText style={styles.inputLabelText}>ACTIVITY TITLE</ThemedText>
+            <ThemedText style={[styles.inputLabelText, { color: theme.textSecondary }]}>ACTIVITY TITLE</ThemedText>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { color: theme.primary, borderColor: theme.border }]}
               placeholder="What needs to be done?"
               placeholderTextColor={theme.textSecondary}
               value={title}
@@ -61,9 +61,9 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
           </View>
 
           <View style={styles.inputWrapper}>
-            <ThemedText style={styles.inputLabelText}>TIME (OPTIONAL)</ThemedText>
+            <ThemedText style={[styles.inputLabelText, { color: theme.textSecondary }]}>TIME (OPTIONAL)</ThemedText>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { color: theme.primary, borderColor: theme.border }]}
               placeholder="e.g. 10:00 AM"
               placeholderTextColor={theme.textSecondary}
               value={time}
@@ -71,7 +71,7 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
             />
           </View>
 
-          <TouchableOpacity style={styles.primaryBtn} onPress={handleAdd} activeOpacity={0.9}>
+          <TouchableOpacity style={[styles.primaryBtn, { backgroundColor: theme.accent }]} onPress={handleAdd} activeOpacity={0.9}>
             <ThemedText style={styles.primaryBtnText}>Save Activity</ThemedText>
             <Ionicons name="checkmark" size={24} color="white" />
           </TouchableOpacity>
@@ -88,10 +88,9 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(23, 30, 25, 0.4)',
+    backgroundColor: 'rgba(8, 51, 68, 0.4)',
   },
   modalView: {
-    backgroundColor: '#eeebe3', // Keep as base off-white for specific modal style
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 32,
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
   modalHeading: {
     fontSize: 24,
     fontFamily: Fonts.black,
-    color: '#171e19',
   },
   closeCircle: {
     width: 44,
@@ -123,7 +121,6 @@ const styles = StyleSheet.create({
   },
   inputLabelText: {
     ...Typography.label,
-    color: '#b7c6c2',
     marginBottom: 8,
   },
   textInput: {
@@ -133,20 +130,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: '#171e19',
     borderWidth: 1,
-    borderColor: '#171e19',
   },
   primaryBtn: {
     height: 64,
     borderRadius: 32, // Pill shape
-    backgroundColor: '#0052ff',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 12,
     marginTop: 8,
-    ...Shadows.blue,
+    ...Shadows.cyan,
   },
   primaryBtnText: {
     color: '#ffffff',

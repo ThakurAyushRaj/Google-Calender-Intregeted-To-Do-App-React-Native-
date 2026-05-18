@@ -219,7 +219,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(23, 30, 25, 0.05)' },
+  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(8, 51, 68, 0.05)' },
   headerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, height: 64 },
   titleWrapper: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   headerTitleText: { fontSize: 20, fontFamily: Fonts.black, textAlign: 'center' },

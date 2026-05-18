@@ -176,12 +176,13 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   };
 
   const deleteTask = (id: string) => {
+    notificationService.cancelTaskNotification(id);
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
   const toggleTask = (id: string) => {
-    setTasks((prev) =>
-      prev.map((task) => {
+    setTasks((prev) => {
+      const updated = prev.map((task) => {
         if (task.id === id) {
           const newDone = !task.done;
           return {
@@ -191,13 +192,20 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
           };
         }
         return task;
-      })
-    );
+      });
+
+      const task = updated.find(t => t.id === id);
+      if (task) {
+        notificationService.scheduleTaskNotification(task as any);
+      }
+
+      return updated;
+    });
   };
 
   const toggleSubtask = (taskId: string, subtaskId: string) => {
-    setTasks((prev) =>
-      prev.map((task) => {
+    setTasks((prev) => {
+      const updated = prev.map((task) => {
         if (task.id === taskId) {
           const newSubtasks = task.subtasks?.map((s) =>
             s.id === subtaskId ? { ...s, done: !s.done } : s
@@ -210,8 +218,15 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
           };
         }
         return task;
-      })
-    );
+      });
+
+      const task = updated.find(t => t.id === taskId);
+      if (task) {
+        notificationService.scheduleTaskNotification(task as any);
+      }
+
+      return updated;
+    });
   };
 
   return (

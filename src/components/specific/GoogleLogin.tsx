@@ -72,7 +72,7 @@ export default function GoogleLogin({ onSuccess }: { onSuccess?: (token: string)
         styles.container,
         {
           backgroundColor: theme.surface,
-          borderColor: theme.success,
+          borderColor: accessToken ? theme.success : theme.accent,
           opacity: isLoading ? 0.6 : 1,
         },
       ]}

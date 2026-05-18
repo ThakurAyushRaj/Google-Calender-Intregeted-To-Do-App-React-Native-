@@ -20,15 +20,15 @@ export function Widget({ title, subtitle, iconName, onPress, accent }: WidgetPro
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles.touchable}>
-      <GlassCard style={[styles.card, accent && { backgroundColor: '#0052ff' }]}>
+      <GlassCard style={[styles.card, { borderColor: theme.border }, accent && { backgroundColor: theme.accent }]}>
         <View style={styles.header}>
            <View style={[styles.iconHolder, { backgroundColor: accent ? 'rgba(255,255,255,0.2)' : theme.accent + '1A' }]}>
-             <Ionicons name={iconName} size={28} color={accent ? '#ffffff' : '#0052ff'} />
+             <Ionicons name={iconName} size={28} color={accent ? '#ffffff' : theme.accent} />
            </View>
         </View>
         <View style={styles.textContainer}>
-          <ThemedText style={[styles.title, { color: accent ? '#ffffff' : '#171e19' }]}>{title}</ThemedText>
-          <ThemedText style={[styles.subtitle, { color: accent ? 'rgba(255,255,255,0.7)' : '#b7c6c2' }]}>{subtitle}</ThemedText>
+          <ThemedText style={[styles.title, { color: accent ? '#ffffff' : theme.primary }]}>{title}</ThemedText>
+          <ThemedText style={[styles.subtitle, { color: accent ? 'rgba(255,255,255,0.7)' : theme.textSecondary }]}>{subtitle}</ThemedText>
         </View>
       </GlassCard>
     </TouchableOpacity>
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: Spacing.lg,
     borderWidth: 1,
-    borderColor: '#171e19',
     backgroundColor: '#ffffff',
     borderRadius: BorderRadius.md, // 24px for nested/secondary widgets
   },

@@ -14,14 +14,17 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#ffffff',
-        tabBarInactiveTintColor: '#b7c6c2',
+        tabBarActiveTintColor: theme.accent,
+        tabBarInactiveTintColor: theme.textSecondary,
         headerShown: false,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [
+          styles.tabBar,
+          { backgroundColor: theme.surface, borderColor: theme.border }
+        ],
         tabBarShowLabel: true,
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '500',
+          fontFamily: 'Satoshi-Medium',
           marginBottom: 4,
         },
       }}>
@@ -52,11 +55,11 @@ export default function TabLayout() {
           tabBarButton: () => (
             <View style={styles.fabWrapper}>
                <TouchableOpacity 
-                style={styles.fab} 
+                style={[styles.fab, { backgroundColor: '#ffffff', borderColor: theme.surface }]} 
                 onPress={() => router.push('/task-entry')}
                 activeOpacity={0.9}
                >
-                 <Ionicons name="add" size={32} color="white" />
+                 <Ionicons name="add" size={32} color={theme.accent} />
                </TouchableOpacity>
             </View>
           ),
@@ -95,14 +98,10 @@ const styles = StyleSheet.create({
     height: 75,
     paddingBottom: 10,
     paddingTop: 8,
-    backgroundColor: '#171e19',
-    borderRadius: 32,
-    borderTopWidth: 0,
+    borderRadius: BorderRadius.xl,
+    borderWidth: 1,
     elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
+    ...Shadows.soft,
   },
   fabWrapper: {
     flex: 1,
@@ -113,13 +112,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#0052ff',
     justifyContent: 'center',
     alignItems: 'center',
     top: -20, 
     borderWidth: 4,
-    borderColor: '#eeebe3', 
-    ...Shadows.blue,
+    ...Shadows.cyan,
     zIndex: 1000,
   },
 });

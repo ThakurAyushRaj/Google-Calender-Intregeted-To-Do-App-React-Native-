@@ -28,6 +28,7 @@ import { ThemedView } from '@/components/common/themed-view';
 import { Ionicons } from '@expo/vector-icons';
 import { CustomAlert } from '@/components/common/themed-dialog';
 import { RevealUp } from '@/components/common/reveal-up';
+import { ProgressBar } from '@/components/common/ProgressBar';
 
 const { width } = Dimensions.get('window');
 
@@ -254,19 +255,19 @@ export default function HomeScreen() {
               {/* Header */}
               <View style={styles.header}>
                 <View>
-                  <ThemedText style={styles.headerLabel}>{getGreeting()}</ThemedText>
+                  <ThemedText style={[styles.headerLabel, { color: theme.textSecondary }]}>{getGreeting()}</ThemedText>
                   <ThemedText style={[styles.headerTitle, { color: theme.primary }]}>{displayName}</ThemedText>
                 </View>
                 <View style={styles.headerRight}>
                   <TouchableOpacity
                     onPress={toggleTheme}
-                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(23, 30, 25, 0.05)' }]}
+                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(8, 51, 68, 0.05)' }]}
                   >
                     <Ionicons name={isDark ? "sunny" : "moon"} size={22} color={theme.text} />
                   </TouchableOpacity>
                   <TouchableOpacity 
                     onPress={() => router.push('/settings')}
-                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(23, 30, 25, 0.05)', overflow: 'hidden' }]}
+                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(8, 51, 68, 0.05)', overflow: 'hidden' }]}
                   >
                     {userImage ? (
                       <Image source={{ uri: userImage }} style={{ width: '100%', height: '100%' }} />
@@ -276,14 +277,8 @@ export default function HomeScreen() {
                   </TouchableOpacity>
                 </View>
               </View>
-               {/* Horizontal Scroll Selector */}
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.catScroll}
-                snapToInterval={172}
-                decelerationRate="fast"
-              >
+              {/* Dashboard 2x2 Grid */}
+              <View style={styles.dashboardGrid}>
                 {dynamicCategories.map((cat) => {
                   const isActive = activeCat === cat.id;
                   return (
@@ -291,26 +286,30 @@ export default function HomeScreen() {
                       key={cat.id}
                       onPress={() => setActiveCat(cat.id)}
                       style={[
-                        styles.catItem,
-                        isActive
-                           ? [styles.catItemActive, { backgroundColor: isDark ? theme.accent : theme.primary }]
-                           : [styles.catItemInactive, { backgroundColor: theme.surface, borderColor: theme.border }]
+                        styles.dashCard,
+                        isActive 
+                          ? { backgroundColor: theme.accent, borderColor: theme.accent } 
+                          : { backgroundColor: theme.surface, borderColor: theme.border }
                       ]}
+                      activeOpacity={0.8}
                     >
-                      {isActive ? (
-                        <View style={styles.activePillContent}>
-                          <View style={[styles.activeCircleHighlight, { backgroundColor: isDark ? 'rgba(255,255,255,0.2)' : theme.accent }]}>
-                            <ThemedText style={[styles.activeCircleText, { color: 'white' }]}>{cat.value}</ThemedText>
-                          </View>
-                          <ThemedText style={[styles.activePillTitle, { color: 'white' }]}>{cat.title}</ThemedText>
-                        </View>
-                      ) : (
-                        <ThemedText style={styles.inactiveValueText}>{cat.value}</ThemedText>
-                      )}
+                      <View style={[
+                        styles.dashValueContainer,
+                        isActive ? styles.dashValueContainerActive : [styles.dashValueContainerInactive, { backgroundColor: isDark ? 'rgba(6, 182, 212, 0.2)' : 'rgba(6, 182, 212, 0.1)' }]
+                      ]}>
+                        <ThemedText style={[
+                          styles.dashValueText,
+                          { color: isActive ? 'white' : theme.accent }
+                        ]}>{cat.value}</ThemedText>
+                      </View>
+                      <ThemedText style={[
+                        styles.dashTitleText,
+                        { color: isActive ? 'white' : theme.textSecondary }
+                      ]}>{cat.title}</ThemedText>
                     </TouchableOpacity>
                   );
                 })}
-              </ScrollView>
+              </View>
 
 
 
@@ -335,36 +334,40 @@ export default function HomeScreen() {
           }
           ListFooterComponent={
             <View style={{ paddingBottom: 100 }}>
-              {/* Hero Feature Card at the bottom */}
+              {/* Modern Progress Card at the bottom */}
               <RevealUp delay={200}>
-                <View style={[styles.heroCard, Shadows.soft, { backgroundColor: theme.surface, borderColor: theme.border, marginTop: Spacing.xl }]}>
-                  <View style={[styles.heroDecorativeBlob, { backgroundColor: theme.secondary + '33' }]} />
-                  <View style={styles.heroHeaderRow}>
-                    <View style={[styles.heroIconContainer, { backgroundColor: theme.surface }]}>
-                      <ThemedText style={{ fontSize: 32 }}>📊</ThemedText>
-                    </View>
+                <View style={[styles.progressCard, Shadows.soft, { backgroundColor: theme.surface, borderColor: theme.border, marginTop: Spacing.xl }]}>
+                  <View style={styles.progressHeaderRow}>
                     <View style={{ flex: 1 }}>
-                      <ThemedText style={styles.heroCardTitle}>Your Daily Progress</ThemedText>
-                      <ThemedText style={styles.heroCardSub}>You&apos;re doing great!</ThemedText>
+                      <ThemedText style={styles.progressCardTitle}>Daily Progress</ThemedText>
+                      <ThemedText style={[styles.progressCardSub, { color: theme.textSecondary }]}>
+                        {completedTasks.length} of {allCount} tasks completed
+                      </ThemedText>
                     </View>
-
-                  </View>
-
-                  <View style={styles.heroMetricsGrid}>
-                    <View style={[styles.glassMetricCard, { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255, 255, 255, 0.8)' }]}>
-                      <ThemedText style={styles.metricLabel}>Completion</ThemedText>
-                      <ThemedText style={[styles.metricValue, { color: theme.primary }]}>{completionRate}%</ThemedText>
-                    </View>
-                    <View style={[styles.glassMetricCard, { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255, 255, 255, 0.8)' }]}>
-                      <ThemedText style={styles.metricLabel}>Pending</ThemedText>
-                      <ThemedText style={[styles.metricValue, { color: theme.primary }]}>{pendingTodayCount}</ThemedText>
+                    <View style={[styles.percentageBadge, { backgroundColor: theme.accent + '20' }]}>
+                      <ThemedText style={[styles.percentageText, { color: theme.accent }]}>{completionRate}%</ThemedText>
                     </View>
                   </View>
-
-                  <View style={[styles.heroAlertBox, { backgroundColor: theme.secondary + '26' }]}>
-                    <Ionicons name="sparkles" size={18} color={theme.accent} />
-                    <ThemedText style={[styles.heroAlertText, { color: theme.accent }]}>Either you run the day, or the day runs you!!</ThemedText>
+                  
+                  <View style={{ marginTop: 24, marginBottom: 20 }}>
+                    <ProgressBar progress={completionRate} />
                   </View>
+
+                  {completionRate === 100 && allCount > 0 ? (
+                    <View style={styles.motivationRow}>
+                      <Ionicons name="trophy" size={18} color={theme.success} />
+                      <ThemedText style={[styles.motivationText, { color: theme.success }]}>
+                        Incredible! You crushed all your goals today.
+                      </ThemedText>
+                    </View>
+                  ) : (
+                    <View style={styles.motivationRow}>
+                      <Ionicons name="flame" size={18} color={theme.accent} />
+                      <ThemedText style={[styles.motivationText, { color: theme.textSecondary }]}>
+                        {completionRate > 50 ? "Great job, almost there!" : "Let's get things done today!"}
+                      </ThemedText>
+                    </View>
+                  )}
                 </View>
               </RevealUp>
             </View>
@@ -411,7 +414,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
           <ThemedText style={[styles.taskTitleText, { color: theme.primary }, task.done && styles.taskDoneText]}>
             {task.title}
           </ThemedText>
-          <ThemedText style={styles.taskSubtitleText}>
+          <ThemedText style={[styles.taskSubtitleText, { color: theme.textSecondary }]}>
             {task.time}
           </ThemedText>
         </View>
@@ -439,7 +442,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
             </TouchableOpacity>
           ))}
           {task.subtasks.length > 3 && (
-            <ThemedText style={styles.moreSubtasks}>
+            <ThemedText style={[styles.moreSubtasks, { color: theme.textSecondary }]}>
               + {task.subtasks.length - 3} more
             </ThemedText>
           )}
@@ -515,136 +518,81 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.accent,
     borderWidth: 2,
   },
-  catScroll: {
-    paddingVertical: Spacing.md,
-    gap: 12,
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingHorizontal: Spacing.md,
-  },
-  catItem: {
-    height: 56,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  catItemInactive: {
-    width: 56,
-    borderWidth: 1,
-  },
-  catItemActive: {
-    width: 160,
-    borderRadius: 16,
-  },
-  inactiveValueText: {
-    ...Typography.h2,
-    color: Colors.light.secondary,
-  },
-  activePillContent: {
+  dashboardGrid: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
+    flexWrap: 'wrap',
     gap: 12,
+    marginBottom: Spacing.xl,
   },
-  activeCircleHighlight: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  dashCard: {
+    width: '48%', // Approx half minus gap
+    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    gap: 12,
+    ...Shadows.soft,
+  },
+  dashValueContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  activeCircleText: {
-    color: Colors.light.surface,
-    fontFamily: Fonts.black,
-    fontSize: 16,
+  dashValueContainerActive: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
-  activePillTitle: {
-    color: Colors.light.surface,
+  dashValueContainerInactive: {
+    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+  },
+  dashValueText: {
+    fontFamily: Fonts.black,
+    fontSize: 18,
+  },
+  dashTitleText: {
     fontFamily: Fonts.bold,
     fontSize: 14,
   },
-  heroCard: {
+  progressCard: {
     padding: 24,
-    borderRadius: BorderRadius.lg,
-    overflow: 'hidden',
-    marginBottom: Spacing.xl,
+    borderRadius: BorderRadius.xl,
     borderWidth: 1,
-  },
-  heroDecorativeBlob: {
-    position: 'absolute',
-    top: -40,
-    right: -40,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    zIndex: -1,
-  },
-  heroHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
     marginBottom: Spacing.xl,
   },
-  heroIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...Shadows.soft,
+  progressHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
   },
-  heroCardTitle: {
+  progressCardTitle: {
     ...Typography.h2,
+    fontFamily: Fonts.bold,
   },
-  heroCardSub: {
+  progressCardSub: {
     ...Typography.small,
-    color: Colors.light.secondary,
-    marginTop: 2,
-  },
-  heroQuickAdd: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...Shadows.blue,
-  },
-  heroMetricsGrid: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: Spacing.xl,
-  },
-  glassMetricCard: {
-    flex: 1,
-    backgroundColor: Colors.light.glass,
-    borderRadius: 16,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: Colors.light.primary,
-  },
-  metricLabel: {
-    ...Typography.label,
-    color: Colors.light.secondary,
-    fontSize: 8,
-  },
-  metricValue: {
-    fontSize: 18,
-    fontFamily: Fonts.black,
     marginTop: 4,
   },
-  heroAlertBox: {
+  percentageBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: BorderRadius.full,
+  },
+  percentageText: {
+    fontFamily: Fonts.black,
+    fontSize: 14,
+  },
+  motivationRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: 'rgba(183, 198, 194, 0.15)',
-    padding: 12,
-    borderRadius: 12,
+    marginTop: 8,
   },
-  heroAlertText: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    color: Colors.light.accent,
+  motivationText: {
+    fontFamily: Fonts.medium,
+    fontSize: 13,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -696,7 +644,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: 'rgba(183, 198, 194, 0.5)',
+    borderColor: 'rgba(165, 243, 252, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -708,7 +656,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(183, 198, 194, 0.1)',
+    borderTopColor: 'rgba(165, 243, 252, 0.1)',
     paddingLeft: 40 + 16, // Align with text wrapper
   },
   subtaskRow: {
@@ -753,6 +701,5 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: Colors.light.secondary,
   },
 });

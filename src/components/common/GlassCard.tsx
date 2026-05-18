@@ -15,7 +15,7 @@ export function GlassCard({ children, style, intensity = 60, ...props }: GlassCa
   return (
     <View style={[styles.container, { borderColor: theme.glassBorder, backgroundColor: theme.glass }, style]} {...props}>
       {Platform.OS !== 'web' ? (
-        <BlurView intensity={intensity} style={StyleSheet.absoluteFill} tint="default" />
+        <BlurView intensity={intensity} style={StyleSheet.absoluteFill} tint={colorScheme === 'dark' ? 'dark' : 'light'} />
       ) : (
         <View 
           style={[
@@ -37,7 +37,7 @@ export function GlassCard({ children, style, intensity = 60, ...props }: GlassCa
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadius.xl, // 40px per spec
+    borderRadius: BorderRadius.lg, // 24px per spec
     borderWidth: 1,
     overflow: 'hidden',
   },
