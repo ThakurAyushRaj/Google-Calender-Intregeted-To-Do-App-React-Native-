@@ -31,7 +31,7 @@ export default function OnboardingScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient
-        colors={isDark ? ['#0F172A', '#020617'] : ['#F8FAFC', '#F1F5F9']}
+        colors={isDark ? ['#020617', '#0f172a'] : ['#ffffff', '#f8fafc']}
         style={StyleSheet.absoluteFill}
       />
       
@@ -39,7 +39,7 @@ export default function OnboardingScreen() {
         <View style={styles.topSection}>
           <Animated.View entering={FadeInDown.delay(200).duration(800)} style={styles.header}>
             <ThemedText style={[styles.welcomeLabel, { color: theme.textSecondary }]}>Welcome to</ThemedText>
-            <ThemedText style={styles.brandTitle}>Time Lineup</ThemedText>
+            <ThemedText style={[styles.brandTitle, { color: theme.primary }]}>Time Lineup</ThemedText>
             <View style={[styles.titleUnderline, { backgroundColor: theme.accent }]} />
           </Animated.View>
 

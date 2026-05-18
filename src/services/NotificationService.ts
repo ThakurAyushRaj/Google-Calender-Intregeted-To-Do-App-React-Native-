@@ -34,7 +34,7 @@ class NotificationService {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+        lightColor: '#FF06B6D4',
       });
     }
 
@@ -48,7 +48,11 @@ class NotificationService {
       return null;
     }
     
-    if (task.reminder === 'None') return null;
+    if (task.done || task.reminder === 'None') {
+      console.log(`[NotificationService] Cancelling notifications for task: ${task.title} (done: ${task.done}, reminder: ${task.reminder})`);
+      await this.cancelTaskNotification(task.id);
+      return null;
+    }
 
     // Parse date and time
     // date is YYYY-MM-DD
@@ -107,7 +111,7 @@ class NotificationService {
         content: {
           title: `Task Reminder: ${title}`,
           body,
-          data: { taskId },
+          data: { taskId, scheduledTime: date.toISOString() },
           android: {
             channelId: 'default',
             importance: Notifications.AndroidImportance.MAX,
@@ -131,13 +135,16 @@ class NotificationService {
   }
 
   async cancelTaskNotification(taskId: string) {
-    // Note: To precisely cancel by taskId, we'd need to store the identifier.
-    // However, for simplicity, we can use the taskId in data to find it if we want,
-    // but scheduleNotificationAsync returns a unique ID.
-    // A better way is to use specific IDs if possible, but Expo doesn't support custom string IDs for triggers.
-    // So we'll just cancel all and let the new one replace it? 
-    // Actually, we should store identifiers in AsyncStorage if we want precise cancellation.
-    // For now, let's just assume we replace it.
+    try {
+      const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+      const target = scheduled.find(n => n.content.data?.taskId === taskId);
+      if (target) {
+        await Notifications.cancelScheduledNotificationAsync(target.identifier);
+        console.log(`[NotificationService] Successfully cancelled notification for task ${taskId}`);
+      }
+    } catch (e) {
+      console.error('[NotificationService] Error cancelling task notification:', e);
+    }
   }
 
   private parseTaskDateTime(dateStr: string, timeStr: string): Date | null {

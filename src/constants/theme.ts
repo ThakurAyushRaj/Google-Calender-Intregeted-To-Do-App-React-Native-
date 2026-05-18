@@ -2,125 +2,129 @@ import { Platform } from 'react-native';
 
 /**
  * Design System Constants
- * Style: Sophisticated Playful
- * Palette: Charcoal, Vibrant Blue, Sage, Off-White
+ * Style: Nexus.One Gradient Fusion Theme
  */
 
 export const Colors = {
+  // Light theme with white background per user request
   light: {
-    // Primary palette
-    primary: '#171e19',     // Charcoal
-    accent: '#0052ff',      // Vibrant Blue 
-    secondary: '#b7c6c2',   // Sage / Gray-Green
-    background: '#eeebe3',  // Off-White
-    surface: '#ffffff',     // White cards
+    primary: '#020617', // Deep slate/black
+    accent: '#06b6d4', // Bright cyan
+    secondary: '#14b8a6', // Soft teal
+    tertiary: '#10b981', // Emerald green
+    background: '#ffffff', // Pure white
+    surface: '#ffffff', // White surface
     
     // UI Helpers
-    text: '#171e19',
-    textSecondary: '#b7c6c2',
-    border: 'rgba(23, 30, 25, 0.6)',
+    text: '#020617', // Dark text for white background
+    textSecondary: '#64748b', // Muted slate
+    textTertiary: '#94a3b8', // Darker slate
+    border: 'rgba(0, 0, 0, 0.08)',
     glass: 'rgba(255, 255, 255, 0.8)',
-    glassBorder: 'rgba(23, 30, 25, 0.3)',
+    glassBorder: 'rgba(0, 0, 0, 0.1)',
     
     // Status
     success: '#10b981',
     warning: '#f59e0b',
-    error: '#0052ff', // Linked to accent blue
-    info: '#0ea5e9',
+    error: '#ef4444',
+    info: '#06b6d4',
   },
   dark: {
-    // Note: Dark mode follows the same sophisticated charcoal base
-    primary: '#ffffff',
-    accent: '#0052ff',
-    secondary: '#b7c6c2',
-    background: '#171e19',
-    surface: '#262d28',
+    primary: '#ffffff', // High contrast for active icons/titles
+    accent: '#06b6d4', // Bright cyan
+    secondary: '#14b8a6', // Soft teal
+    tertiary: '#10b981', // Emerald green
+    background: '#020617', // Deep slate
+    surface: '#0f172a', // Slightly elevated slate for cards
     
-    text: '#ffffff',
-    textSecondary: '#b7c6c2',
-    border: 'rgba(255, 255, 255, 0.4)',
-    glass: 'rgba(38, 45, 40, 0.8)',
-    glassBorder: 'rgba(255, 255, 255, 0.3)',
+    // UI Helpers
+    text: '#f1f5f9', // Light slate
+    textSecondary: '#94a3b8', // Muted slate
+    textTertiary: '#64748b', // Darker slate
+    border: 'rgba(255, 255, 255, 0.1)', // Crisp white border
+    glass: 'rgba(15, 23, 42, 0.6)', // Proper dark glass
+    glassBorder: 'rgba(255, 255, 255, 0.1)',
     
+    // Status
     success: '#10b981',
     warning: '#f59e0b',
-    error: '#0052ff',
-    info: '#0ea5e9',
+    error: '#ef4444',
+    info: '#06b6d4',
   }
 };
 
 export const Spacing = {
   xs: 4,
   sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 40,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  xxxl: 32,
+  huge: 40,
+  massive: 48,
   header: 56,
 };
 
 export const BorderRadius = {
   sm: 8,
-  md: 16,
+  md: 12,
   lg: 24, // Standard nested card radius
-  xl: 40, // Signature oversized radius
+  xl: 32, // Signature oversized radius
   full: 9999,
 };
 
 export const Fonts = {
-  regular: 'Roboto_400Regular',
-  bold: 'Roboto_700Bold',
-  extraBold: 'Roboto_700Bold', // Roboto doesn't have 800 by default in this package
-  black: 'Roboto_900Black',
-  display: 'Roboto_900Black',
-  displayBold: 'Roboto_700Bold',
+  regular: 'Satoshi-Regular',
+  medium: 'Satoshi-Medium',
+  bold: 'Satoshi-Bold',
+  display: 'ClashGrotesk-Medium',
+  displayBold: 'ClashGrotesk-Bold',
+  mono: 'SpaceGrotesk-Regular',
 };
 
+// Fallbacks if fonts aren't loaded yet
 export const Typography = {
   hero: {
     fontSize: 48,
-    fontFamily: Fonts.display,
+    fontFamily: Fonts.displayBold,
     lineHeight: 52,
     letterSpacing: -1,
   },
   h1: {
-    fontSize: 32,
-    fontFamily: Fonts.black,
-    lineHeight: 40,
-    textTransform: 'none' as const,
+    fontSize: 28,
+    fontFamily: Fonts.displayBold,
+    lineHeight: 36,
   },
   h2: {
-    fontSize: 24,
-    fontFamily: Fonts.black,
-    lineHeight: 32,
-    textTransform: 'none' as const,
+    fontSize: 20,
+    fontFamily: Fonts.display,
+    lineHeight: 28,
   },
   h3: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
+    fontSize: 16,
+    fontFamily: Fonts.display,
     lineHeight: 24,
-    textTransform: 'none' as const,
   },
   body: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Fonts.regular,
-    lineHeight: 24,
+    lineHeight: 20,
   },
   label: {
     fontSize: 10,
-    fontFamily: Fonts.black,
+    fontFamily: Fonts.bold,
     letterSpacing: 1.5,
-    textTransform: 'none' as const,
+    textTransform: 'uppercase' as const,
   },
   utility: {
     fontSize: 12,
-    fontFamily: Fonts.displayBold,
+    fontFamily: Fonts.mono,
     letterSpacing: 1,
-    textTransform: 'none' as const,
   },
   small: {
     fontSize: 12,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.medium,
     lineHeight: 16,
   },
   caption: {
@@ -132,36 +136,36 @@ export const Typography = {
 
 export const Shadows = {
   soft: {
-    shadowColor: '#171e19',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.05,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  blue: { // Updated from red to blue
-    shadowColor: '#0052ff',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 4,
+  },
+  cyan: { // Glow effect
+    shadowColor: '#06b6d4',
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
-    shadowRadius: 15,
+    shadowRadius: 12,
     elevation: 8,
   },
   sm: {
-    shadowColor: '#171e19',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 2,
   },
   strong: {
-    shadowColor: '#171e19',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.15,
-    shadowRadius: 24,
-    elevation: 10,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.3,
+    shadowRadius: 32,
+    elevation: 12,
   }
 };
 
 export const Animations = {
-  duration: 250,
+  duration: 300,
   easing: [0.25, 0.1, 0.25, 1] as [number, number, number, number], // ease-in-out
 };

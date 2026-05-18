@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#171E19",
+        "backgroundColor": "#020617",
         "foregroundImage": "./src/assets/images/appicon.png"
       },
       "edgeToEdgeEnabled": true,
@@ -34,9 +34,9 @@
           "image": "./src/assets/images/appicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#020617",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#020617"
           }
         }
       ],
@@ -47,7 +47,20 @@
         "expo-notifications",
         {
           "icon": "./src/assets/images/appicon.png",
-          "color": "#0052ff"
+          "color": "#06b6d4"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/ClashGrotesk-Medium.ttf",
+            "./assets/fonts/ClashGrotesk-Bold.ttf",
+            "./assets/fonts/Satoshi-Regular.ttf",
+            "./assets/fonts/Satoshi-Medium.ttf",
+            "./assets/fonts/Satoshi-Bold.ttf",
+            "./assets/fonts/SpaceGrotesk-Regular.ttf"
+          ]
         }
       ]
     ],

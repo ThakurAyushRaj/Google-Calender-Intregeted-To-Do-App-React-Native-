@@ -104,7 +104,7 @@ export default function CalendarScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView transparent style={styles.container}>
       {/* Fixed Header */}
       <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background }]}>
         <View style={styles.headerContent}>
@@ -138,7 +138,7 @@ export default function CalendarScreen() {
 
             <View style={styles.daysRow}>
               {daysOfWeek.map((day, i) => (
-                <ThemedText key={i} style={styles.dayLabel}>{day}</ThemedText>
+                <ThemedText key={i} style={[styles.dayLabel, { color: theme.textSecondary }]}>{day}</ThemedText>
               ))}
             </View>
 
@@ -201,7 +201,7 @@ export default function CalendarScreen() {
                   <ThemedText style={styles.eventTime}>{task.time}</ThemedText>
                   <ThemedText style={[styles.eventTitle, { color: theme.primary }]}>{task.title}</ThemedText>
                   <View style={styles.row}>
-                    <ThemedText style={styles.eventSub}>{task.category}</ThemedText>
+                    <ThemedText style={[styles.eventSub, { color: theme.textSecondary }]}>{task.category}</ThemedText>
                     {task.isGoogleTask && (
                       <Ionicons name="logo-google" size={14} color="#4285F4" style={{ marginLeft: 8 }} />
                     )}
@@ -215,7 +215,7 @@ export default function CalendarScreen() {
           ) : (
             <View style={styles.emptyEvents}>
               <Ionicons name="cafe-outline" size={32} color={theme.textSecondary} />
-              <ThemedText style={styles.emptyEventsText}>No tasks scheduled for this day</ThemedText>
+              <ThemedText style={[styles.emptyEventsText, { color: theme.textSecondary }]}>No tasks scheduled for this day</ThemedText>
             </View>
           )}
         </RevealUp>
@@ -226,7 +226,7 @@ export default function CalendarScreen() {
 
 const getCategoryColor = (category: string, theme: any) => {
   switch (category.toLowerCase()) {
-    case 'work': return '#0052ff';
+    case 'work': return theme.accent;
     case 'personal': return '#10b981';
     case 'shopping': return '#f59e0b';
     case 'health': return '#ef4444';
@@ -236,7 +236,7 @@ const getCategoryColor = (category: string, theme: any) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(23, 30, 25, 0.05)' },
+  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(8, 51, 68, 0.05)' },
   headerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, height: 64 },
   titleWrapper: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   headerTitleText: { fontSize: 20, fontFamily: Fonts.black, textAlign: 'center' },
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   navButtons: { flexDirection: 'row', gap: 8 },
   navBtn: { width: 36, height: 36, borderRadius: 10, backgroundColor: 'rgba(183, 198, 194, 0.1)', justifyContent: 'center', alignItems: 'center' },
   daysRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16 },
-  dayLabel: { fontSize: 14, fontFamily: Fonts.bold, color: Colors.light.secondary, width: 40, textAlign: 'center' },
+  dayLabel: { fontSize: 14, fontFamily: Fonts.bold, width: 40, textAlign: 'center' },
   datesGrid: { flexDirection: 'row', flexWrap: 'wrap' },
   dateCell: { width: '14.28%', height: 50, justifyContent: 'center', alignItems: 'center', marginBottom: 4, position: 'relative' },
   dateText: { fontSize: 16, fontFamily: Fonts.bold },
@@ -272,9 +272,9 @@ const styles = StyleSheet.create({
   eventIndicator: { width: 4, height: 40, borderRadius: 2, marginRight: 16 },
   row: { flexDirection: 'row', alignItems: 'center' },
   eventInfo: { flex: 1 },
-  eventTime: { fontSize: 12, fontFamily: Fonts.bold, color: Colors.light.accent, marginBottom: 2 },
+  eventTime: { fontSize: 12, fontFamily: Fonts.bold, color: '#06b6d4', marginBottom: 2 },
   eventTitle: { fontSize: 16, fontFamily: Fonts.bold },
-  eventSub: { fontSize: 13, fontFamily: Fonts.regular, color: Colors.light.secondary },
+  eventSub: { fontSize: 13, fontFamily: Fonts.regular },
   emptyEvents: { alignItems: 'center', marginTop: 20, padding: 32, opacity: 0.5 },
-  emptyEventsText: { marginTop: 12, fontSize: 14, fontFamily: Fonts.bold, color: Colors.light.secondary, textAlign: 'center' },
+  emptyEventsText: { marginTop: 12, fontSize: 14, fontFamily: Fonts.bold, textAlign: 'center' },
 });
