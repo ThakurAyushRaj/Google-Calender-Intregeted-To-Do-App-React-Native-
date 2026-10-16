@@ -200,7 +200,7 @@ export default function SettingsScreen() {
 
         <RevealUp delay={500}>
           <View style={styles.section}>
-            <ThemedText style={[styles.sectionTitle, { color: theme.error }]}>Danger Zone</ThemedText>
+            <ThemedText style={[styles.sectionTitle, { color: theme.error }]}>Logout</ThemedText>
             <TouchableOpacity 
               style={[styles.logoutItem, { backgroundColor: theme.surface, borderColor: theme.error }]} 
               onPress={handleLogout}

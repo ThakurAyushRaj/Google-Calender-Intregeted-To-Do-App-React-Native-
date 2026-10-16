@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#100407",
+        "backgroundColor": "#070D18",
         "foregroundImage": "./src/assets/images/appicon.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -32,9 +32,9 @@
           "image": "./src/assets/images/appicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#100407",
+          "backgroundColor": "#070D18",
           "dark": {
-            "backgroundColor": "#100407"
+            "backgroundColor": "#070D18"
           }
         }
       ],
@@ -45,7 +45,7 @@
         "expo-notifications",
         {
           "icon": "./src/assets/images/appicon.png",
-          "color": "#E11D48"
+          "color": "#2563EB"
         }
       ]
     ],

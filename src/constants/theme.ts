@@ -1,73 +1,64 @@
-/**
- * Global Design System Constants & Theme Engine
- * Style: Rich Bordeaux Wine & Crimson Rose (Classic Luxury Fusion)
- * 
- * 💡 SINGLE SOURCE OF TRUTH:
- * Changing values in this file immediately updates colors, tints,
- * surfaces, text, borders, and shadows globally across the entire app!
- */
 
 export const Colors = {
-  // Light theme: Warm luxury pearl cream with refined Bordeaux wine and crimson rose
   light: {
-    primary: '#1C0A0E', // Deep wine obsidian
-    accent: '#E11D48', // Vibrant bordeaux rose
-    secondary: '#9F1239', // Deep rich bordeaux
-    tertiary: '#FB7185', // Soft rose petal highlight
-    background: '#FAF5F5', // Warm luxury pearl cream
-    surface: '#FFFFFF', // Elevated crisp porcelain
-    card: '#FFFFFF',
+    primary: '#0F172A', 
+    accent: '#16c3c6', 
+    secondary: '#5f78bd', 
+    tertiary: '#60A5FA', 
+    background: '#e8f3f5', 
+    surface: '#ecf7f7', 
+    card: '#fcfcfe',
     
     // UI Helpers & Text
-    text: '#1C0A0E', // Deep obsidian wine
-    textSecondary: '#785E65', // Sophisticated cashmere plum
-    textTertiary: '#A89299', // Soft mauve stone
-    border: 'rgba(225, 29, 72, 0.14)', // Subtle rose trim
+    text: '#0F172A', 
+    textSecondary: '#64748B', 
+    textTertiary: '#94A3B8', 
+    border: 'rgba(37, 99, 235, 0.12)', 
     glass: 'rgba(255, 255, 255, 0.88)',
-    glassBorder: 'rgba(225, 29, 72, 0.20)',
-    accentText: '#FFFFFF', // Contrast text on accent background
+    glassBorder: 'rgba(37, 99, 235, 0.18)',
+    accentText: '#FFFFFF', 
     
     // Dynamic Tints
-    tint08: 'rgba(225, 29, 72, 0.08)',
-    tint12: 'rgba(225, 29, 72, 0.12)',
-    tint18: 'rgba(225, 29, 72, 0.18)',
-    tint35: 'rgba(225, 29, 72, 0.35)',
+    tint08: 'rgba(37, 99, 235, 0.08)',
+    tint12: 'rgba(37, 99, 235, 0.12)',
+    tint18: 'rgba(37, 99, 235, 0.18)',
+    tint35: 'rgba(37, 99, 235, 0.35)',
     
     // Status
     success: '#10B981',
     warning: '#F59E0B',
-    error: '#E11D48',
-    info: '#E11D48',
+    error: '#EF4444',
+    info: '#2563EB',
   },
   dark: {
-    primary: '#FFF1F2', // Soft luminous pearl rose
-    accent: '#FB7185', // Luminous rose crimson
-    secondary: '#BE123C', // Rich satin bordeaux
-    tertiary: '#FDA4AF', // Soft rose shimmer
-    background: '#100407', // Deep bordeaux obsidian onyx
-    surface: '#1C0A0E', // Elevated smoked wine onyx
-    card: '#1C0A0E',
+    primary: '#F8FAFC', 
+    accent: '#38BDF8', 
+    secondary: '#2563EB', 
+    tertiary: '#93C5FD', 
+    background: '#070D18', 
+    surface: '#0F1A2E', 
+    card: '#0F1A2E',
     
     // UI Helpers & Text
-    text: '#FFF1F2', // Warm pearl rose
-    textSecondary: '#BDA1A8', // Soft cashmere mauve
-    textTertiary: '#7E646B', // Muted dark wine stone
-    border: 'rgba(251, 113, 133, 0.18)', // Delicate luminous rose border
-    glass: 'rgba(28, 10, 14, 0.80)', // Smoked velvet wine glass
-    glassBorder: 'rgba(251, 113, 133, 0.22)',
-    accentText: '#100407', // Dark contrast on luminous rose
+    text: '#F8FAFC', 
+    textSecondary: '#94A3B8', 
+    textTertiary: '#64748B', 
+    border: 'rgba(56, 189, 248, 0.16)', 
+    glass: 'rgba(15, 26, 46, 0.82)', 
+    glassBorder: 'rgba(56, 189, 248, 0.22)',
+    accentText: '#070D18', 
     
     // Dynamic Tints
-    tint08: 'rgba(251, 113, 133, 0.08)',
-    tint12: 'rgba(251, 113, 133, 0.12)',
-    tint18: 'rgba(251, 113, 133, 0.18)',
-    tint35: 'rgba(251, 113, 133, 0.35)',
+    tint08: 'rgba(56, 189, 248, 0.08)',
+    tint12: 'rgba(56, 189, 248, 0.12)',
+    tint18: 'rgba(56, 189, 248, 0.18)',
+    tint35: 'rgba(56, 189, 248, 0.35)',
     
     // Status
     success: '#10B981',
     warning: '#F59E0B',
-    error: '#FB7185',
-    info: '#FB7185',
+    error: '#F87171',
+    info: '#38BDF8',
   }
 };
 
