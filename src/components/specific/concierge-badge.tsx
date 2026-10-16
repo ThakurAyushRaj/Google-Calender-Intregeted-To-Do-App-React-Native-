@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming, Easing } from 'react-native-reanimated';
-import { Colors, BorderRadius, Typography } from '@/constants/theme';
+import { Colors, Typography } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 
 export function ConciergeBadge() {

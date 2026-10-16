@@ -1,4 +1,4 @@
-import { DarkTheme, DefaultTheme, ThemeProvider as NavigationProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider as NavigationProvider } from 'expo-router/react-navigation';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   useFonts,
@@ -13,17 +13,16 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { ThemeProvider, useAppTheme } from '@/context/ThemeContext';
+import { TaskProvider } from '@/context/TaskContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-import { TaskProvider } from '@/context/TaskContext';
-import { AuthProvider, useAuth } from '@/context/AuthContext';
-
 function RootLayoutNav() {
-  const { googleToken, isGoogleConnected } = useAuth();
+  const { isGoogleConnected } = useAuth();
   const router = useRouter();
-  const { theme, isDark } = useAppTheme();
+  const { isDark } = useAppTheme();
   const [loaded] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
@@ -42,7 +41,7 @@ function RootLayoutNav() {
         }, 100);
       }
     }
-  }, [loaded, isGoogleConnected]);
+  }, [loaded, isGoogleConnected, router]);
 
   if (!loaded) {
     return null;

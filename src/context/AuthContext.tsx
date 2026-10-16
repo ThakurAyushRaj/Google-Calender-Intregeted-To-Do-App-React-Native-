@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refreshGoogleToken = async () => {
     try {
       console.log('AuthProvider: Refreshing google token...');
-      const userInfo = await GoogleSignin.signInSilently();
+      await GoogleSignin.signInSilently();
       const tokens = await GoogleSignin.getTokens();
       if (tokens && tokens.accessToken) {
         setGoogleToken(tokens.accessToken);

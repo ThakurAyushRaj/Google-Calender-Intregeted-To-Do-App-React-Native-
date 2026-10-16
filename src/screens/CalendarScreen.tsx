@@ -1,17 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks, Task } from '@/context/TaskContext';
-import { Colors, Spacing, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Colors, Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { Ionicons } from '@expo/vector-icons';
 import { RevealUp } from '@/components/common/reveal-up';
 import { useRouter } from 'expo-router';
-import { googleCalendarService, GoogleCalendarEvent } from '@/services/GoogleCalendarService';
 import { useAuth } from '@/context/AuthContext';
-import { useEffect } from 'react';
 import { Gesture, GestureDetector, Directions } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -106,17 +104,17 @@ export default function CalendarScreen() {
   return (
     <ThemedView transparent style={styles.container}>
       {/* Fixed Header */}
-      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background }]}>
+      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background, borderBottomColor: theme.border }]}>
         <View style={styles.headerContent}>
           <View style={styles.titleWrapper}>
-            <ThemedText style={styles.headerTitleText}>Calendar</ThemedText>
+            <ThemedText style={[styles.headerTitleText, { color: theme.primary }]}>Calendar</ThemedText>
           </View>
         </View>
       </View>
 
       <ScrollView 
         style={styles.scroll} 
-        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 80 }]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <RevealUp delay={100}>
@@ -127,10 +125,10 @@ export default function CalendarScreen() {
                 {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
               </ThemedText>
               <View style={styles.navButtons}>
-                <TouchableOpacity style={styles.navBtn} onPress={() => changeMonth(-1)}>
+                <TouchableOpacity style={[styles.navBtn, { backgroundColor: theme.surface, borderColor: theme.border }]} onPress={() => changeMonth(-1)}>
                   <Ionicons name="chevron-back" size={20} color={theme.text} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navBtn} onPress={() => changeMonth(1)}>
+                <TouchableOpacity style={[styles.navBtn, { backgroundColor: theme.surface, borderColor: theme.border }]} onPress={() => changeMonth(1)}>
                   <Ionicons name="chevron-forward" size={20} color={theme.text} />
                 </TouchableOpacity>
               </View>
@@ -155,7 +153,8 @@ export default function CalendarScreen() {
                     key={date.toString()} 
                     style={[
                       styles.dateCell, 
-                      isSelected && { backgroundColor: theme.accent, borderRadius: 12 }
+                      isSelected && { backgroundColor: theme.accent, borderRadius: 12 },
+                      isToday && !isSelected && { borderWidth: 1.5, borderColor: theme.accent, borderRadius: 12 }
                     ]}
                     onPress={() => setSelectedDate(date)}
                   >
@@ -198,7 +197,7 @@ export default function CalendarScreen() {
               >
                 <View style={[styles.eventIndicator, { backgroundColor: task.isGoogleTask ? '#4285F4' : getCategoryColor(task.category, theme) }]} />
                 <View style={styles.eventInfo}>
-                  <ThemedText style={styles.eventTime}>{task.time}</ThemedText>
+                  <ThemedText style={[styles.eventTime, { color: theme.accent }]}>{task.time}</ThemedText>
                   <ThemedText style={[styles.eventTitle, { color: theme.primary }]}>{task.title}</ThemedText>
                   <View style={styles.row}>
                     <ThemedText style={[styles.eventSub, { color: theme.textSecondary }]}>{task.category}</ThemedText>
@@ -251,7 +250,7 @@ const styles = StyleSheet.create({
   calendarHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
   monthText: { fontSize: 22, fontFamily: Fonts.black },
   navButtons: { flexDirection: 'row', gap: 8 },
-  navBtn: { width: 36, height: 36, borderRadius: 10, backgroundColor: 'rgba(183, 198, 194, 0.1)', justifyContent: 'center', alignItems: 'center' },
+  navBtn: { width: 36, height: 36, borderRadius: 10, borderWidth: 1, justifyContent: 'center', alignItems: 'center' },
   daysRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16 },
   dayLabel: { fontSize: 14, fontFamily: Fonts.bold, width: 40, textAlign: 'center' },
   datesGrid: { flexDirection: 'row', flexWrap: 'wrap' },
@@ -272,7 +271,7 @@ const styles = StyleSheet.create({
   eventIndicator: { width: 4, height: 40, borderRadius: 2, marginRight: 16 },
   row: { flexDirection: 'row', alignItems: 'center' },
   eventInfo: { flex: 1 },
-  eventTime: { fontSize: 12, fontFamily: Fonts.bold, color: '#06b6d4', marginBottom: 2 },
+  eventTime: { fontSize: 12, fontFamily: Fonts.bold, marginBottom: 2 },
   eventTitle: { fontSize: 16, fontFamily: Fonts.bold },
   eventSub: { fontSize: 13, fontFamily: Fonts.regular },
   emptyEvents: { alignItems: 'center', marginTop: 20, padding: 32, opacity: 0.5 },

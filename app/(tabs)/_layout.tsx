@@ -1,10 +1,12 @@
 import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Colors, Spacing, BorderRadius, Shadows } from '@/constants/theme';
+import { Colors, BorderRadius, Shadows } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
+
+import { ScalePressable } from '@/components/common/ScalePressable';
 
 export default function TabLayout() {
   const { theme: currentTheme, isDark } = useAppTheme();
@@ -54,13 +56,13 @@ export default function TabLayout() {
           tabBarLabel: () => null,
           tabBarButton: () => (
             <View style={styles.fabWrapper}>
-               <TouchableOpacity 
-                style={[styles.fab, { backgroundColor: '#ffffff', borderColor: theme.surface }]} 
+               <ScalePressable 
+                style={[styles.fab, { backgroundColor: isDark ? theme.surface : '#ffffff', borderColor: theme.border }]} 
                 onPress={() => router.push('/task-entry')}
-                activeOpacity={0.9}
+                hapticType="heavy"
                >
                  <Ionicons name="add" size={32} color={theme.accent} />
-               </TouchableOpacity>
+               </ScalePressable>
             </View>
           ),
         }}

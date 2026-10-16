@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Switch, Modal } from 'react-native';
-import { BlurView } from 'expo-blur';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Typography, Fonts, Shadows, BorderRadius } from '@/constants/theme';
+import { Colors, Spacing, Fonts, Shadows, BorderRadius } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +13,40 @@ import { useRouter } from 'expo-router';
 import { CustomAlert } from '@/components/common/themed-dialog';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
-import { useEffect } from 'react';
+
+interface SettingItemProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  subtitle?: string;
+  value?: boolean;
+  type?: 'chevron' | 'toggle';
+  onPress?: () => void;
+  theme: any;
+}
+
+function SettingItem({ icon, title, subtitle, value, type = 'chevron', onPress, theme }: SettingItemProps) {
+  return (
+    <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.surface, borderColor: theme.border }]} onPress={onPress}>
+      <View style={[styles.iconBox, { backgroundColor: theme.background }]}>
+        <Ionicons name={icon} size={22} color={theme.accent} />
+      </View>
+      <View style={styles.settingText}>
+        <ThemedText style={[styles.settingTitle, { color: theme.primary }]}>{title}</ThemedText>
+        {subtitle && <ThemedText style={styles.settingSub}>{subtitle}</ThemedText>}
+      </View>
+      {type === 'toggle' ? (
+        <Switch 
+          value={value} 
+          onValueChange={onPress}
+          trackColor={{ false: Colors.light.secondary, true: theme.accent }}
+          thumbColor={Colors.light.surface}
+        />
+      ) : (
+        <Ionicons name="chevron-forward" size={20} color={Colors.light.secondary} />
+      )}
+    </TouchableOpacity>
+  );
+}
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
@@ -24,10 +56,6 @@ export default function SettingsScreen() {
   const theme = Colors[isDark ? 'dark' : 'light'];
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
-  useEffect(() => {
-    loadSettings();
-  }, []);
 
   const loadSettings = async () => {
     try {
@@ -39,6 +67,11 @@ export default function SettingsScreen() {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadSettings();
+  }, []);
 
   const toggleNotifications = async (value: boolean) => {
     try {
@@ -84,28 +117,6 @@ export default function SettingsScreen() {
     );
   };
 
-  const SettingItem = ({ icon, title, subtitle, value, type = 'chevron', onPress }: any) => (
-    <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.surface, borderColor: theme.border }]} onPress={onPress}>
-      <View style={[styles.iconBox, { backgroundColor: theme.background }]}>
-        <Ionicons name={icon} size={22} color={theme.accent} />
-      </View>
-      <View style={styles.settingText}>
-        <ThemedText style={[styles.settingTitle, { color: theme.primary }]}>{title}</ThemedText>
-        {subtitle && <ThemedText style={styles.settingSub}>{subtitle}</ThemedText>}
-      </View>
-      {type === 'toggle' ? (
-        <Switch 
-          value={value} 
-          onValueChange={onPress}
-          trackColor={{ false: Colors.light.secondary, true: theme.accent }}
-          thumbColor={Colors.light.surface}
-        />
-      ) : (
-        <Ionicons name="chevron-forward" size={20} color={Colors.light.secondary} />
-      )}
-    </TouchableOpacity>
-  );
-
   return (
     <ThemedView style={styles.container}>
       {/* Fixed Header */}
@@ -132,6 +143,7 @@ export default function SettingsScreen() {
               type="toggle"
               value={isDark}
               onPress={toggleTheme}
+              theme={theme}
             />
           </View>
         </RevealUp>
@@ -144,6 +156,7 @@ export default function SettingsScreen() {
               title="Activity Reminders" 
               subtitle="View upcoming task notifications"
               onPress={() => router.push('/notifications')}
+              theme={theme}
             />
             <SettingItem 
               icon="notifications-circle-outline" 
@@ -152,6 +165,7 @@ export default function SettingsScreen() {
               type="toggle"
               value={notificationsEnabled}
               onPress={() => toggleNotifications(!notificationsEnabled)}
+              theme={theme}
             />
           </View>
         </RevealUp>
@@ -168,6 +182,7 @@ export default function SettingsScreen() {
               icon="shield-checkmark-outline" 
               title="Privacy & Security" 
               onPress={() => router.push('/privacy-security')}
+              theme={theme}
             />
           </View>
         </RevealUp>
@@ -179,6 +194,7 @@ export default function SettingsScreen() {
               icon="information-circle-outline" 
               title="About Time Lineup" 
               onPress={() => router.push('/about')}
+              theme={theme}
             />
           </View>
         </RevealUp>

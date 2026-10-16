@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps, Animated, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, BorderRadius, Shadows, Typography, Animations } from '@/constants/theme';
+import { Colors, BorderRadius, Shadows, Typography } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ThemedText } from './themed-text';
 
@@ -14,7 +14,7 @@ export function GradientButton({ title, icon, style, ...props }: GradientButtonP
   const colorScheme = useColorScheme() ?? 'light';
   const theme = Colors[colorScheme];
   
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const [scaleAnim] = React.useState(() => new Animated.Value(1));
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {

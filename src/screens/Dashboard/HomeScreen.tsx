@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView,
-  Dimensions,
   TouchableOpacity,
   FlatList,
   RefreshControl,
@@ -29,17 +27,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { CustomAlert } from '@/components/common/themed-dialog';
 import { RevealUp } from '@/components/common/reveal-up';
 import { ProgressBar } from '@/components/common/ProgressBar';
-
-const { width } = Dimensions.get('window');
-
-
+import { ScalePressable } from '@/components/common/ScalePressable';
 
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { isDark, toggleTheme } = useAppTheme();
   const theme = Colors[isDark ? 'dark' : 'light'];
-  const { tasks = [], toggleTask, toggleSubtask, syncWithGoogle, isLoading } = useTasks();
+  const { tasks = [], toggleTask, toggleSubtask, syncWithGoogle } = useTasks();
 
   // Custom Alert State
   const [alertConfig, setAlertConfig] = useState<{
@@ -118,7 +113,6 @@ export default function HomeScreen() {
   const upcomingTasks = todayTasks.filter(t => !t.done && parseDateTime(t.date, t.time) >= now);
 
   const allCount = todayTasks.length;
-  const pendingTodayCount = todayTasks.filter(t => !t.done).length;
 
   const dynamicCategories = [
     { id: 'all', title: 'All Activities', value: allCount.toString() },
@@ -282,16 +276,16 @@ export default function HomeScreen() {
                 {dynamicCategories.map((cat) => {
                   const isActive = activeCat === cat.id;
                   return (
-                    <TouchableOpacity
+                    <ScalePressable
                       key={cat.id}
                       onPress={() => setActiveCat(cat.id)}
+                      hapticType="selection"
                       style={[
                         styles.dashCard,
                         isActive 
                           ? { backgroundColor: theme.accent, borderColor: theme.accent } 
                           : { backgroundColor: theme.surface, borderColor: theme.border }
                       ]}
-                      activeOpacity={0.8}
                     >
                       <View style={[
                         styles.dashValueContainer,
@@ -306,7 +300,7 @@ export default function HomeScreen() {
                         styles.dashTitleText,
                         { color: isActive ? 'white' : theme.textSecondary }
                       ]}>{cat.title}</ThemedText>
-                    </TouchableOpacity>
+                    </ScalePressable>
                   );
                 })}
               </View>
@@ -397,18 +391,19 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
   const theme = Colors[isDark ? 'dark' : 'light'];
 
   return (
-    <TouchableOpacity
+    <ScalePressable
       style={[styles.taskCard, { backgroundColor: theme.surface, borderColor: theme.border }]}
       onPress={onPress}
-      activeOpacity={0.9}
+      hapticType="light"
     >
       <View style={styles.taskMainRow}>
-        <TouchableOpacity
+        <ScalePressable
           style={[styles.circularCheckbox, task.done && styles.checkboxActive]}
           onPress={onToggle}
+          hapticType="medium"
         >
           {task.done && <Ionicons name="checkmark" size={24} color="white" />}
-        </TouchableOpacity>
+        </ScalePressable>
 
         <View style={styles.taskTextWrapper}>
           <ThemedText style={[styles.taskTitleText, { color: theme.primary }, task.done && styles.taskDoneText]}>
@@ -425,10 +420,11 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
       {task.subtasks && task.subtasks.length > 0 && !task.done && (
         <View style={styles.subtasksPreview}>
           {task.subtasks.slice(0, 3).map((sub: any) => (
-            <TouchableOpacity
+            <ScalePressable
               key={sub.id}
               style={styles.subtaskRow}
               onPress={() => onToggleSubtask(sub.id)}
+              hapticType="light"
             >
               <View style={[styles.miniCheckbox, sub.done && styles.miniCheckboxActive]}>
                 {sub.done && <Ionicons name="checkmark" size={10} color="white" />}
@@ -439,7 +435,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
               >
                 {sub.text}
               </ThemedText>
-            </TouchableOpacity>
+            </ScalePressable>
           ))}
           {task.subtasks.length > 3 && (
             <ThemedText style={[styles.moreSubtasks, { color: theme.textSecondary }]}>
@@ -448,7 +444,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
           )}
         </View>
       )}
-    </TouchableOpacity>
+    </ScalePressable>
   );
 }
 

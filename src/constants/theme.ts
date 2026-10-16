@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 /**
  * Design System Constants
  * Style: Nexus.One Gradient Fusion Theme
@@ -78,6 +76,7 @@ export const Fonts = {
   regular: 'Satoshi-Regular',
   medium: 'Satoshi-Medium',
   bold: 'Satoshi-Bold',
+  black: 'Satoshi-Black',
   display: 'ClashGrotesk-Medium',
   displayBold: 'ClashGrotesk-Bold',
   mono: 'SpaceGrotesk-Regular',

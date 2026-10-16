@@ -8,7 +8,6 @@
     "icon": "./src/assets/images/appicon.png",
     "scheme": "time-lineup",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
@@ -17,7 +16,6 @@
         "backgroundColor": "#020617",
         "foregroundImage": "./src/assets/images/appicon.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.rajayush.timelineup",
       "permissions": ["SCHEDULE_EXACT_ALARM", "VIBRATE"]
@@ -48,19 +46,6 @@
         {
           "icon": "./src/assets/images/appicon.png",
           "color": "#06b6d4"
-        }
-      ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/ClashGrotesk-Medium.ttf",
-            "./assets/fonts/ClashGrotesk-Bold.ttf",
-            "./assets/fonts/Satoshi-Regular.ttf",
-            "./assets/fonts/Satoshi-Medium.ttf",
-            "./assets/fonts/Satoshi-Bold.ttf",
-            "./assets/fonts/SpaceGrotesk-Regular.ttf"
-          ]
         }
       ]
     ],

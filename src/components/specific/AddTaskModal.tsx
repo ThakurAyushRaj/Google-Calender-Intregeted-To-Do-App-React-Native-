@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Modal, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Colors, Typography, Fonts, Shadows } from '@/constants/theme';
 import { useTasks } from '@/context/TaskContext';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/common/themed-text';
