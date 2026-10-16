@@ -4,7 +4,7 @@ import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { RevealUp } from '@/components/common/reveal-up';
@@ -35,8 +35,7 @@ function SecuritySection({ title, icon, content, theme }: SecuritySectionProps) 
 export default function PrivacySecurityScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   return (
     <ThemedView style={styles.container}>

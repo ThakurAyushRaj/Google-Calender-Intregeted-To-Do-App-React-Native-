@@ -4,7 +4,7 @@ import { useRouter, Stack } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
-import { Colors, Spacing, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import GoogleLogin from '@/components/specific/GoogleLogin';
@@ -15,10 +15,9 @@ const { width } = Dimensions.get('window');
 
 export default function OnboardingScreen() {
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
   const { setGoogleToken } = useAuth();
   const router = useRouter();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   const handleLoginSuccess = async (token: string) => {
     await setGoogleToken(token);
@@ -29,7 +28,7 @@ export default function OnboardingScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient
-        colors={isDark ? ['#020617', '#0f172a'] : ['#ffffff', '#f8fafc']}
+        colors={[theme.background, theme.surface]}
         style={StyleSheet.absoluteFill}
       />
       

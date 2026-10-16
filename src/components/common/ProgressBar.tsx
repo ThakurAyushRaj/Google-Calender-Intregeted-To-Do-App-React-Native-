@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Animated, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, BorderRadius } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { BorderRadius } from '@/constants/theme';
+import { useAppTheme } from '@/context/ThemeContext';
 
 interface ProgressBarProps {
   progress: number; // 0 to 100
@@ -10,8 +10,7 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ progress, style }: ProgressBarProps) {
-  const colorScheme = useColorScheme() ?? 'light';
-  const theme = Colors[colorScheme];
+  const { colors: theme } = useAppTheme();
   
   const [animatedWidth] = useState(() => new Animated.Value(0));
 

@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks, Task } from '@/context/TaskContext';
-import { Colors, Spacing, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,8 +15,7 @@ import { runOnJS } from 'react-native-reanimated';
 
 export default function CalendarScreen() {
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
   const { tasks } = useTasks();
   const router = useRouter();
 
@@ -161,7 +160,7 @@ export default function CalendarScreen() {
                     <ThemedText style={[
                       styles.dateText,
                       { color: theme.primary },
-                      isSelected && { color: 'white', fontFamily: Fonts.black },
+                      isSelected && { color: theme.accentText, fontFamily: Fonts.black },
                       isToday && !isSelected && { color: theme.accent, fontFamily: Fonts.black }
                     ]}>
                       {date.getDate()}
@@ -169,7 +168,7 @@ export default function CalendarScreen() {
                     {hasTasks && (
                       <View style={[
                         styles.taskDot, 
-                        { backgroundColor: isSelected ? 'white' : theme.accent }
+                        { backgroundColor: isSelected ? theme.accentText : theme.accent }
                       ]} />
                     )}
                   </TouchableOpacity>
@@ -226,9 +225,9 @@ export default function CalendarScreen() {
 const getCategoryColor = (category: string, theme: any) => {
   switch (category.toLowerCase()) {
     case 'work': return theme.accent;
-    case 'personal': return '#10b981';
-    case 'shopping': return '#f59e0b';
-    case 'health': return '#ef4444';
+    case 'personal': return theme.success;
+    case 'shopping': return theme.warning;
+    case 'health': return theme.error;
     default: return theme.accent;
   }
 };

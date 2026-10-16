@@ -1,6 +1,7 @@
-import { useAppTheme } from '@/context/ThemeContext';
+import { useContext } from 'react';
+import { ThemeContext } from '@/context/ThemeContext';
 
 export function useColorScheme() {
-  const { theme } = useAppTheme();
-  return theme;
+  const context = useContext(ThemeContext);
+  return context?.theme ?? 'light';
 }

@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming, Easing } from 'react-native-reanimated';
-import { Colors, Typography } from '@/constants/theme';
+import { Typography } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
+import { useAppTheme } from '@/context/ThemeContext';
 
 export function ConciergeBadge() {
+  const { colors: theme } = useAppTheme();
   const translateY = useSharedValue(-5);
 
   useEffect(() => {
@@ -23,9 +25,9 @@ export function ConciergeBadge() {
   }));
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <ThemedText style={styles.number}>01</ThemedText>
-      <ThemedText type="utility" style={styles.text}>Concierge</ThemedText>
+    <Animated.View style={[styles.container, { backgroundColor: theme.accent }, animatedStyle]}>
+      <ThemedText style={[styles.number, { color: theme.accentText }]}>01</ThemedText>
+      <ThemedText type="utility" style={[styles.text, { color: theme.accentText }]}>Concierge</ThemedText>
     </Animated.View>
   );
 }
@@ -35,12 +37,10 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 80,
-    backgroundColor: '#7DD3FC',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     // Shadows
-    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
     shadowRadius: 20,
@@ -50,13 +50,11 @@ const styles = StyleSheet.create({
     ...Typography.hero,
     fontSize: 48,
     fontStyle: 'italic',
-    color: Colors.light.primary,
     lineHeight: 48,
   },
   text: {
     ...Typography.utility,
     fontSize: 8,
-    color: Colors.light.primary,
     marginTop: 4,
   },
 });

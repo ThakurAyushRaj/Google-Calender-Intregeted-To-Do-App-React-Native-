@@ -19,7 +19,7 @@ import Animated, {
   FadeInDown,
   FadeOut,
 } from 'react-native-reanimated';
-import { Colors, Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks } from '@/context/TaskContext';
 import { useAuth } from '@/context/AuthContext';
@@ -65,7 +65,7 @@ const Chip = ({ label, selected, onPress, theme }: { label: string; selected: bo
     ]}
     activeOpacity={0.8}
   >
-    <ThemedText style={[styles.chipText, { color: selected ? 'white' : theme.textSecondary }]}>
+    <ThemedText style={[styles.chipText, { color: selected ? theme.accentText : theme.textSecondary, fontFamily: selected ? Fonts.bold : Fonts.medium }]}>
       {label}
     </ThemedText>
   </TouchableOpacity>
@@ -75,8 +75,7 @@ export default function AdvancedTaskEntryScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { taskId } = useLocalSearchParams<{ taskId: string }>();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { isDark, colors: theme } = useAppTheme();
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
   const { googleToken } = useAuth();
 
@@ -552,7 +551,7 @@ export default function AdvancedTaskEntryScreen() {
       <View style={styles.footer}>
         <GradientButton 
           title={isEditing ? 'Update Activity' : 'Create Activity'}
-          icon={<Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color="#020617" />}
+          icon={<Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color={theme.accentText} />}
           onPress={handleSave}
         />
       </View>

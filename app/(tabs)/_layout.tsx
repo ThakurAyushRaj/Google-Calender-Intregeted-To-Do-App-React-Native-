@@ -3,14 +3,13 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Colors, BorderRadius, Shadows } from '@/constants/theme';
+import { BorderRadius, Shadows } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 
 import { ScalePressable } from '@/components/common/ScalePressable';
 
 export default function TabLayout() {
-  const { theme: currentTheme, isDark } = useAppTheme();
-  const theme = Colors[currentTheme];
+  const { colors: theme } = useAppTheme();
   const router = useRouter();
 
   return (
@@ -57,7 +56,7 @@ export default function TabLayout() {
           tabBarButton: () => (
             <View style={styles.fabWrapper}>
                <ScalePressable 
-                style={[styles.fab, { backgroundColor: isDark ? theme.surface : '#ffffff', borderColor: theme.border }]} 
+                style={[styles.fab, { backgroundColor: theme.surface, borderColor: theme.border }]} 
                 onPress={() => router.push('/task-entry')}
                 hapticType="heavy"
                >
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     top: -20, 
     borderWidth: 4,
-    ...Shadows.cyan,
+    ...Shadows.glow,
     zIndex: 1000,
   },
 });

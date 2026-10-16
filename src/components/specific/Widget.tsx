@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { GlassCard } from '@/components/common/GlassCard';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+import { useAppTheme } from '@/context/ThemeContext';
+import { Spacing, BorderRadius } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/common/themed-text';
 
@@ -15,20 +15,19 @@ interface WidgetProps {
 }
 
 export function Widget({ title, subtitle, iconName, onPress, accent }: WidgetProps) {
-  const colorScheme = useColorScheme() ?? 'light';
-  const theme = Colors[colorScheme];
+  const { colors: theme } = useAppTheme();
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles.touchable}>
-      <GlassCard style={[styles.card, { borderColor: theme.border }, accent && { backgroundColor: theme.accent }]}>
+      <GlassCard style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }, accent && { backgroundColor: theme.accent }]}>
         <View style={styles.header}>
-           <View style={[styles.iconHolder, { backgroundColor: accent ? 'rgba(255,255,255,0.2)' : theme.accent + '1A' }]}>
-             <Ionicons name={iconName} size={28} color={accent ? '#ffffff' : theme.accent} />
+           <View style={[styles.iconHolder, { backgroundColor: accent ? theme.tint18 : theme.tint12 }]}>
+             <Ionicons name={iconName} size={28} color={accent ? theme.accentText : theme.accent} />
            </View>
         </View>
         <View style={styles.textContainer}>
-          <ThemedText style={[styles.title, { color: accent ? '#ffffff' : theme.primary }]}>{title}</ThemedText>
-          <ThemedText style={[styles.subtitle, { color: accent ? 'rgba(255,255,255,0.7)' : theme.textSecondary }]}>{subtitle}</ThemedText>
+          <ThemedText style={[styles.title, { color: accent ? theme.accentText : theme.primary }]}>{title}</ThemedText>
+          <ThemedText style={[styles.subtitle, { color: accent ? theme.accentText : theme.textSecondary }]}>{subtitle}</ThemedText>
         </View>
       </GlassCard>
     </TouchableOpacity>
@@ -46,7 +45,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: Spacing.lg,
     borderWidth: 1,
-    backgroundColor: '#ffffff',
     borderRadius: BorderRadius.md, // 24px for nested/secondary widgets
   },
   iconHolder: {

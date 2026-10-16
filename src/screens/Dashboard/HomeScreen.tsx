@@ -11,7 +11,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import {
-  Colors,
   Spacing,
   BorderRadius,
   Typography,
@@ -32,8 +31,7 @@ import { ScalePressable } from '@/components/common/ScalePressable';
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isDark, toggleTheme } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { isDark, toggleTheme, colors: theme } = useAppTheme();
   const { tasks = [], toggleTask, toggleSubtask, syncWithGoogle } = useTasks();
 
   // Custom Alert State
@@ -255,13 +253,13 @@ export default function HomeScreen() {
                 <View style={styles.headerRight}>
                   <TouchableOpacity
                     onPress={toggleTheme}
-                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(8, 51, 68, 0.05)' }]}
+                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : theme.tint08 }]}
                   >
                     <Ionicons name={isDark ? "sunny" : "moon"} size={22} color={theme.text} />
                   </TouchableOpacity>
                   <TouchableOpacity 
                     onPress={() => router.push('/settings')}
-                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(8, 51, 68, 0.05)', overflow: 'hidden' }]}
+                    style={[styles.themeToggle, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : theme.tint08, overflow: 'hidden' }]}
                   >
                     {userImage ? (
                       <Image source={{ uri: userImage }} style={{ width: '100%', height: '100%' }} />
@@ -289,16 +287,16 @@ export default function HomeScreen() {
                     >
                       <View style={[
                         styles.dashValueContainer,
-                        isActive ? styles.dashValueContainerActive : [styles.dashValueContainerInactive, { backgroundColor: isDark ? 'rgba(6, 182, 212, 0.2)' : 'rgba(6, 182, 212, 0.1)' }]
+                        isActive ? styles.dashValueContainerActive : [styles.dashValueContainerInactive, { backgroundColor: theme.tint12 }]
                       ]}>
                         <ThemedText style={[
                           styles.dashValueText,
-                          { color: isActive ? 'white' : theme.accent }
+                          { color: isActive ? theme.accentText : theme.accent }
                         ]}>{cat.value}</ThemedText>
                       </View>
                       <ThemedText style={[
                         styles.dashTitleText,
-                        { color: isActive ? 'white' : theme.textSecondary }
+                        { color: isActive ? theme.accentText : theme.textSecondary }
                       ]}>{cat.title}</ThemedText>
                     </ScalePressable>
                   );
@@ -387,8 +385,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
   onToggle: () => void,
   onToggleSubtask: (subId: string) => void
 }) {
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   return (
     <ScalePressable
@@ -398,11 +395,11 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
     >
       <View style={styles.taskMainRow}>
         <ScalePressable
-          style={[styles.circularCheckbox, task.done && styles.checkboxActive]}
+          style={[styles.circularCheckbox, { borderColor: theme.tint35 }, task.done && { backgroundColor: theme.accent, borderColor: theme.accent }]}
           onPress={onToggle}
           hapticType="medium"
         >
-          {task.done && <Ionicons name="checkmark" size={24} color="white" />}
+          {task.done && <Ionicons name="checkmark" size={24} color={theme.accentText} />}
         </ScalePressable>
 
         <View style={styles.taskTextWrapper}>
@@ -414,11 +411,11 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
           </ThemedText>
         </View>
 
-        <Ionicons name="chevron-forward" size={18} color="#b7c6c2" />
+        <Ionicons name="chevron-forward" size={18} color={theme.textTertiary} />
       </View>
 
       {task.subtasks && task.subtasks.length > 0 && !task.done && (
-        <View style={styles.subtasksPreview}>
+        <View style={[styles.subtasksPreview, { borderTopColor: theme.tint12 }]}>
           {task.subtasks.slice(0, 3).map((sub: any) => (
             <ScalePressable
               key={sub.id}
@@ -426,8 +423,8 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
               onPress={() => onToggleSubtask(sub.id)}
               hapticType="light"
             >
-              <View style={[styles.miniCheckbox, sub.done && styles.miniCheckboxActive]}>
-                {sub.done && <Ionicons name="checkmark" size={10} color="white" />}
+              <View style={[styles.miniCheckbox, { borderColor: theme.secondary }, sub.done && { backgroundColor: theme.accent, borderColor: theme.accent }]}>
+                {sub.done && <Ionicons name="checkmark" size={10} color={theme.accentText} />}
               </View>
               <ThemedText
                 style={[styles.subtaskText, { color: theme.primary }, sub.done && styles.subtaskDoneText]}
@@ -438,7 +435,7 @@ function TaskCard({ task, onPress, onToggle, onToggleSubtask }: {
             </ScalePressable>
           ))}
           {task.subtasks.length > 3 && (
-            <ThemedText style={[styles.moreSubtasks, { color: theme.textSecondary }]}>
+            <ThemedText style={[styles.moreSubtasks, { color: theme.secondary }]}>
               + {task.subtasks.length - 3} more
             </ThemedText>
           )}
@@ -480,7 +477,6 @@ const styles = StyleSheet.create({
   headerLabel: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: Colors.light.secondary,
   },
   headerTitle: {
     fontSize: 24,
@@ -497,22 +493,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     ...Shadows.soft,
-  },
-  profileImg: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2,
-  },
-  notifBadge: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.light.accent,
-    borderWidth: 2,
   },
   dashboardGrid: {
     flexDirection: 'row',
@@ -542,7 +522,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
   dashValueContainerInactive: {
-    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+    backgroundColor: 'rgba(197, 160, 89, 0.12)',
   },
   dashValueText: {
     fontFamily: Fonts.black,
@@ -601,11 +581,6 @@ const styles = StyleSheet.create({
     ...Typography.h2,
     fontFamily: Fonts.bold,
   },
-  seeAllActionText: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: Colors.light.accent,
-  },
   taskCard: {
     borderRadius: 24,
     padding: 16,
@@ -632,7 +607,6 @@ const styles = StyleSheet.create({
   taskSubtitleText: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Colors.light.secondary,
     marginTop: 2,
   },
   circularCheckbox: {
@@ -640,19 +614,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: 'rgba(165, 243, 252, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  checkboxActive: {
-    backgroundColor: Colors.light.accent,
-    borderColor: Colors.light.accent,
   },
   subtasksPreview: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(165, 243, 252, 0.1)',
     paddingLeft: 40 + 16, // Align with text wrapper
   },
   subtaskRow: {
@@ -665,14 +633,9 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: Colors.light.secondary,
     marginRight: 8,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  miniCheckboxActive: {
-    backgroundColor: Colors.light.accent,
-    borderColor: Colors.light.accent,
   },
   subtaskText: {
     fontSize: 13,
@@ -686,7 +649,6 @@ const styles = StyleSheet.create({
   moreSubtasks: {
     fontSize: 11,
     fontFamily: Fonts.bold,
-    color: Colors.light.secondary,
     marginTop: 2,
   },
   emptyContainer: {

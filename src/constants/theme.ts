@@ -1,53 +1,73 @@
 /**
- * Design System Constants
- * Style: Nexus.One Gradient Fusion Theme
+ * Global Design System Constants & Theme Engine
+ * Style: Rich Bordeaux Wine & Crimson Rose (Classic Luxury Fusion)
+ * 
+ * 💡 SINGLE SOURCE OF TRUTH:
+ * Changing values in this file immediately updates colors, tints,
+ * surfaces, text, borders, and shadows globally across the entire app!
  */
 
 export const Colors = {
-  // Light theme with white background per user request
+  // Light theme: Warm luxury pearl cream with refined Bordeaux wine and crimson rose
   light: {
-    primary: '#020617', // Deep slate/black
-    accent: '#06b6d4', // Bright cyan
-    secondary: '#14b8a6', // Soft teal
-    tertiary: '#10b981', // Emerald green
-    background: '#ffffff', // Pure white
-    surface: '#ffffff', // White surface
+    primary: '#1C0A0E', // Deep wine obsidian
+    accent: '#E11D48', // Vibrant bordeaux rose
+    secondary: '#9F1239', // Deep rich bordeaux
+    tertiary: '#FB7185', // Soft rose petal highlight
+    background: '#FAF5F5', // Warm luxury pearl cream
+    surface: '#FFFFFF', // Elevated crisp porcelain
+    card: '#FFFFFF',
     
-    // UI Helpers
-    text: '#020617', // Dark text for white background
-    textSecondary: '#64748b', // Muted slate
-    textTertiary: '#94a3b8', // Darker slate
-    border: 'rgba(0, 0, 0, 0.08)',
-    glass: 'rgba(255, 255, 255, 0.8)',
-    glassBorder: 'rgba(0, 0, 0, 0.1)',
+    // UI Helpers & Text
+    text: '#1C0A0E', // Deep obsidian wine
+    textSecondary: '#785E65', // Sophisticated cashmere plum
+    textTertiary: '#A89299', // Soft mauve stone
+    border: 'rgba(225, 29, 72, 0.14)', // Subtle rose trim
+    glass: 'rgba(255, 255, 255, 0.88)',
+    glassBorder: 'rgba(225, 29, 72, 0.20)',
+    accentText: '#FFFFFF', // Contrast text on accent background
+    
+    // Dynamic Tints
+    tint08: 'rgba(225, 29, 72, 0.08)',
+    tint12: 'rgba(225, 29, 72, 0.12)',
+    tint18: 'rgba(225, 29, 72, 0.18)',
+    tint35: 'rgba(225, 29, 72, 0.35)',
     
     // Status
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#06b6d4',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#E11D48',
+    info: '#E11D48',
   },
   dark: {
-    primary: '#ffffff', // High contrast for active icons/titles
-    accent: '#06b6d4', // Bright cyan
-    secondary: '#14b8a6', // Soft teal
-    tertiary: '#10b981', // Emerald green
-    background: '#020617', // Deep slate
-    surface: '#0f172a', // Slightly elevated slate for cards
+    primary: '#FFF1F2', // Soft luminous pearl rose
+    accent: '#FB7185', // Luminous rose crimson
+    secondary: '#BE123C', // Rich satin bordeaux
+    tertiary: '#FDA4AF', // Soft rose shimmer
+    background: '#100407', // Deep bordeaux obsidian onyx
+    surface: '#1C0A0E', // Elevated smoked wine onyx
+    card: '#1C0A0E',
     
-    // UI Helpers
-    text: '#f1f5f9', // Light slate
-    textSecondary: '#94a3b8', // Muted slate
-    textTertiary: '#64748b', // Darker slate
-    border: 'rgba(255, 255, 255, 0.1)', // Crisp white border
-    glass: 'rgba(15, 23, 42, 0.6)', // Proper dark glass
-    glassBorder: 'rgba(255, 255, 255, 0.1)',
+    // UI Helpers & Text
+    text: '#FFF1F2', // Warm pearl rose
+    textSecondary: '#BDA1A8', // Soft cashmere mauve
+    textTertiary: '#7E646B', // Muted dark wine stone
+    border: 'rgba(251, 113, 133, 0.18)', // Delicate luminous rose border
+    glass: 'rgba(28, 10, 14, 0.80)', // Smoked velvet wine glass
+    glassBorder: 'rgba(251, 113, 133, 0.22)',
+    accentText: '#100407', // Dark contrast on luminous rose
+    
+    // Dynamic Tints
+    tint08: 'rgba(251, 113, 133, 0.08)',
+    tint12: 'rgba(251, 113, 133, 0.12)',
+    tint18: 'rgba(251, 113, 133, 0.18)',
+    tint35: 'rgba(251, 113, 133, 0.35)',
     
     // Status
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#06b6d4',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#FB7185',
+    info: '#FB7185',
   }
 };
 
@@ -135,30 +155,51 @@ export const Typography = {
 
 export const Shadows = {
   soft: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
+    shadowColor: Colors.light.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
     shadowRadius: 16,
     elevation: 4,
   },
-  cyan: { // Glow effect
-    shadowColor: '#06b6d4',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
+  glow: { // Signature dynamic accent glow
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  accent: {
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  gold: { // Backward compatibility alias
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  cyan: { // Backward compatibility alias
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
     elevation: 8,
   },
   sm: {
-    shadowColor: '#000000',
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
   strong: {
-    shadowColor: '#000000',
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.22,
     shadowRadius: 32,
     elevation: 12,
   }
