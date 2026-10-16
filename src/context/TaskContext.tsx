@@ -97,38 +97,42 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   }, [tasks, isLoading]);
 
   const syncWithGoogle = useCallback(async () => {
-    if (!googleToken) return;
+    const runSync = async (retry: boolean): Promise<void> => {
+      if (!googleToken) return;
 
-    try {
-      console.log('TaskContext: Syncing with Google Calendar...');
-      const events = await googleCalendarService.fetchUpcomingEvents(googleToken);
+      try {
+        console.log('TaskContext: Syncing with Google Calendar...');
+        const events = await googleCalendarService.fetchUpcomingEvents(googleToken);
 
-      setTasks(prevTasks => {
-        const newTasks = [...prevTasks];
-        events.forEach(event => {
-          const existingIndex = newTasks.findIndex(t => t.id === event.id);
-          if (existingIndex === -1) {
-            newTasks.push(mapGoogleEventToTask(event));
-          } else {
-            newTasks[existingIndex] = {
-              ...newTasks[existingIndex],
-              title: event.summary,
-              date: event.start.date || event.start.dateTime!.split('T')[0],
-            };
-          }
+        setTasks(prevTasks => {
+          const newTasks = [...prevTasks];
+          events.forEach(event => {
+            const existingIndex = newTasks.findIndex(t => t.id === event.id);
+            if (existingIndex === -1) {
+              newTasks.push(mapGoogleEventToTask(event));
+            } else {
+              newTasks[existingIndex] = {
+                ...newTasks[existingIndex],
+                title: event.summary,
+                date: event.start.date || event.start.dateTime!.split('T')[0],
+              };
+            }
+          });
+          return newTasks;
         });
-        return newTasks;
-      });
-    } catch (error: any) {
-      if (error?.response?.status === 401) {
-        console.log('TaskContext: Token expired, refreshing...');
-        const newToken = await refreshGoogleToken();
-        if (newToken) {
-          return syncWithGoogle();
+      } catch (error: any) {
+        if (error?.response?.status === 401 && retry) {
+          console.log('TaskContext: Token expired, refreshing...');
+          const newToken = await refreshGoogleToken();
+          if (newToken) {
+            return runSync(false);
+          }
         }
+        console.error('Google sync failed:', error);
       }
-      console.error('Google sync failed:', error);
-    }
+    };
+
+    return runSync(true);
   }, [googleToken, refreshGoogleToken]);
 
   // Automatically sync ONCE when token first becomes available after loading

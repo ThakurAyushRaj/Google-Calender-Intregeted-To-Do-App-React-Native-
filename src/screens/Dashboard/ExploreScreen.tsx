@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTasks, Task, Priority } from '@/context/TaskContext';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, Typography, Fonts, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
@@ -12,10 +12,9 @@ import { RevealUp } from '@/components/common/reveal-up';
 
 export default function AllActivitiesScreen() {
   const { tasks } = useTasks();
-  const { isDark } = useAppTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   const todayStr = (() => {
     const now = new Date();
@@ -68,7 +67,7 @@ export default function AllActivitiesScreen() {
                     style={[styles.headerAddBtn, { backgroundColor: theme.accent }]}
                     onPress={() => router.push('/task-entry')}
                   >
-                    <Ionicons name="add" size={24} color="white" />
+                    <Ionicons name="add" size={24} color={theme.accentText} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -96,8 +95,7 @@ export default function AllActivitiesScreen() {
 }
 
 function TaskCard({ task, onPress }: { task: Task; onPress: () => void }) {
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   const getPriorityColor = (p: Priority) => {
     switch (p) {
@@ -144,7 +142,7 @@ function TaskCard({ task, onPress }: { task: Task; onPress: () => void }) {
       </View>
 
       <View style={styles.cardFooter}>
-        <View style={[styles.categoryChip, { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(23, 30, 25, 0.05)' }]}>
+        <View style={[styles.categoryChip, { backgroundColor: theme.tint08 }]}>
           <ThemedText style={[styles.categoryText, { color: theme.primary }]}>{task.category}</ThemedText>
         </View>
       </View>

@@ -19,9 +19,7 @@ import Animated, {
   FadeInDown,
   FadeOut,
 } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
-
-import { Colors, Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks } from '@/context/TaskContext';
 import { useAuth } from '@/context/AuthContext';
@@ -30,6 +28,8 @@ import { GradientButton } from '@/components/common/GradientButton';
 import { ThemedView } from '@/components/common/themed-view';
 import { googleCalendarService } from '@/services/GoogleCalendarService';
 import { CustomAlert } from '@/components/common/themed-dialog';
+import { ScalePressable } from '@/components/common/ScalePressable';
+import * as Haptics from 'expo-haptics';
 
 // --- Interfaces ---
 type Priority = 'Low' | 'Medium' | 'High';
@@ -65,7 +65,7 @@ const Chip = ({ label, selected, onPress, theme }: { label: string; selected: bo
     ]}
     activeOpacity={0.8}
   >
-    <ThemedText style={[styles.chipText, { color: selected ? 'white' : theme.textSecondary }]}>
+    <ThemedText style={[styles.chipText, { color: selected ? theme.accentText : theme.textSecondary, fontFamily: selected ? Fonts.bold : Fonts.medium }]}>
       {label}
     </ThemedText>
   </TouchableOpacity>
@@ -75,8 +75,7 @@ export default function AdvancedTaskEntryScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { taskId } = useLocalSearchParams<{ taskId: string }>();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { isDark, colors: theme } = useAppTheme();
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
   const { googleToken } = useAuth();
 
@@ -84,25 +83,47 @@ export default function AdvancedTaskEntryScreen() {
   const isEditing = !!existingTask;
 
   // --- State ---
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [isAllDay, setIsAllDay] = useState(false);
-  const [taskDate, setTaskDate] = useState(new Date());
+  const [title, setTitle] = useState(existingTask?.title || '');
+  const [description, setDescription] = useState(existingTask?.description || '');
+  const [isAllDay, setIsAllDay] = useState(existingTask?.time === 'All Day');
+  const [taskDate, setTaskDate] = useState(() => {
+    if (existingTask?.date) {
+      const [year, month, day] = existingTask.date.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+    return new Date();
+  });
   const [allDayReminderTime, setAllDayReminderTime] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000));
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [pickerType, setPickerType] = useState<'allDay' | 'start' | 'end'>('start');
-  const [priority, setPriority] = useState<Priority>('Medium');
-  const [category, setCategory] = useState('Work');
+  const [priority, setPriority] = useState<Priority>(existingTask?.priority || 'Medium');
+  const [category, setCategory] = useState(existingTask?.category || 'Work');
   const [categories, setCategories] = useState(['Work', 'Personal', 'Health', 'Study']);
   const [customCategory, setCustomCategory] = useState('');
   const [isAddingCategory, setIsAddingCategory] = useState(false);
-  const [reminder, setReminder] = useState<ReminderOption>('10m Before');
-  const [customReminderHrs, setCustomReminderHrs] = useState('0');
-  const [customReminderMins, setCustomReminderMins] = useState('30');
-  const [subtasks, setSubtasks] = useState<Subtask[]>([]);
+  const [reminder, setReminder] = useState<ReminderOption>(() => {
+    if (existingTask?.reminder === 'Custom') return 'Custom';
+    if (existingTask?.reminder) return existingTask.reminder as ReminderOption;
+    return '10m Before';
+  });
+  const [customReminderHrs, setCustomReminderHrs] = useState(() => {
+    if (existingTask?.reminder === 'Custom' && existingTask.customReminderMinutes) {
+      return Math.floor(existingTask.customReminderMinutes / 60).toString();
+    }
+    return '0';
+  });
+  const [customReminderMins, setCustomReminderMins] = useState(() => {
+    if (existingTask?.reminder === 'Custom' && existingTask.customReminderMinutes) {
+      return (existingTask.customReminderMinutes % 60).toString();
+    }
+    return '30';
+  });
+  const [subtasks, setSubtasks] = useState<Subtask[]>(() =>
+    existingTask?.subtasks?.map(s => ({ id: s.id, text: s.text, completed: s.done })) || []
+  );
   const [newSubtask, setNewSubtask] = useState('');
 
   // Custom Alert State
@@ -125,32 +146,7 @@ export default function AdvancedTaskEntryScreen() {
   const titleInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    if (existingTask) {
-      setTitle(existingTask.title);
-      // Logic for parsing date/time back to Date objects if needed
-      // For simplicity, we'll keep the current date objects unless we want to be more precise
-      const [year, month, day] = existingTask.date.split('-').map(Number);
-      setTaskDate(new Date(year, month - 1, day));
-
-      if (existingTask.time === 'All Day') {
-        setIsAllDay(true);
-      } else {
-        setIsAllDay(false);
-        // We'd ideally parse the time string back to a Date object here
-      }
-
-      setPriority(existingTask.priority);
-      setCategory(existingTask.category);
-      setSubtasks(existingTask.subtasks?.map(s => ({ id: s.id, text: s.text, completed: s.done })) || []);
-      
-      if (existingTask.reminder === 'Custom' && existingTask.customReminderMinutes) {
-        setReminder('Custom');
-        setCustomReminderHrs(Math.floor(existingTask.customReminderMinutes / 60).toString());
-        setCustomReminderMins((existingTask.customReminderMinutes % 60).toString());
-      } else if (existingTask.reminder) {
-        setReminder(existingTask.reminder as ReminderOption);
-      }
-    } else {
+    if (!existingTask) {
       const timer = setTimeout(() => titleInputRef.current?.focus(), 500);
       return () => clearTimeout(timer);
     }
@@ -275,6 +271,7 @@ export default function AdvancedTaskEntryScreen() {
 
   const handleDelete = () => {
     if (isEditing && taskId) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       showAlert(
         "Delete Activity",
         "Are you sure you want to permanently delete this activity?",
@@ -300,17 +297,17 @@ export default function AdvancedTaskEntryScreen() {
 
       <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16) }]}>
         <View style={styles.headerContent}>
-          <TouchableOpacity onPress={() => router.back()} style={[styles.backButton, { backgroundColor: theme.surface }]}>
+          <ScalePressable onPress={() => router.back()} style={[styles.backButton, { backgroundColor: theme.surface }]} hapticType="medium">
             <Ionicons name="close-outline" size={28} color={theme.text} />
-          </TouchableOpacity>
+          </ScalePressable>
           <View style={styles.titleWrapper}>
             <ThemedText style={[styles.headerTitleText, { color: theme.primary }]}>{isEditing ? 'Edit Activity' : 'New Activity'}</ThemedText>
           </View>
           <View style={styles.headerRight}>
             {isEditing && (
-              <TouchableOpacity onPress={handleDelete} style={[styles.deleteButton, { backgroundColor: theme.surface }]}>
-                <Ionicons name="trash-outline" size={24} color={Colors.light.error} />
-              </TouchableOpacity>
+              <ScalePressable onPress={handleDelete} style={[styles.deleteButton, { backgroundColor: theme.surface }]} hapticType="heavy">
+                <Ionicons name="trash-outline" size={24} color={theme.error} />
+              </ScalePressable>
             )}
           </View>
         </View>
@@ -554,7 +551,7 @@ export default function AdvancedTaskEntryScreen() {
       <View style={styles.footer}>
         <GradientButton 
           title={isEditing ? 'Update Activity' : 'Create Activity'}
-          icon={<Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color="#020617" />}
+          icon={<Ionicons name={isEditing ? "refresh-outline" : "sparkles-outline"} size={20} color={theme.accentText} />}
           onPress={handleSave}
         />
       </View>

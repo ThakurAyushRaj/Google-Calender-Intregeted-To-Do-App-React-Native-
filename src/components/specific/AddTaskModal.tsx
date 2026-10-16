@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Modal, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Typography, Fonts, Shadows } from '@/constants/theme';
 import { useTasks } from '@/context/TaskContext';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/common/themed-text';
@@ -12,8 +12,7 @@ interface AddTaskModalProps {
 }
 
 export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
   const { addTask } = useTasks();
   const [title, setTitle] = useState('');
   const [time, setTime] = useState('');
@@ -43,7 +42,7 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
         <View style={[styles.modalView, { backgroundColor: theme.background }]}>
           <View style={styles.headerRow}>
             <ThemedText style={[styles.modalHeading, { color: theme.primary }]}>New Activity</ThemedText>
-            <TouchableOpacity onPress={onClose} style={styles.closeCircle}>
+            <TouchableOpacity onPress={onClose} style={[styles.closeCircle, { backgroundColor: theme.surface }]}>
               <Ionicons name="close" size={24} color={theme.primary} />
             </TouchableOpacity>
           </View>
@@ -51,7 +50,7 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
           <View style={styles.inputWrapper}>
             <ThemedText style={[styles.inputLabelText, { color: theme.textSecondary }]}>ACTIVITY TITLE</ThemedText>
             <TextInput
-              style={[styles.textInput, { color: theme.primary, borderColor: theme.border }]}
+              style={[styles.textInput, { backgroundColor: theme.surface, color: theme.primary, borderColor: theme.border }]}
               placeholder="What needs to be done?"
               placeholderTextColor={theme.textSecondary}
               value={title}
@@ -63,7 +62,7 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
           <View style={styles.inputWrapper}>
             <ThemedText style={[styles.inputLabelText, { color: theme.textSecondary }]}>TIME (OPTIONAL)</ThemedText>
             <TextInput
-              style={[styles.textInput, { color: theme.primary, borderColor: theme.border }]}
+              style={[styles.textInput, { backgroundColor: theme.surface, color: theme.primary, borderColor: theme.border }]}
               placeholder="e.g. 10:00 AM"
               placeholderTextColor={theme.textSecondary}
               value={time}
@@ -72,8 +71,8 @@ export function AddTaskModal({ visible, onClose }: AddTaskModalProps) {
           </View>
 
           <TouchableOpacity style={[styles.primaryBtn, { backgroundColor: theme.accent }]} onPress={handleAdd} activeOpacity={0.9}>
-            <ThemedText style={styles.primaryBtnText}>Save Activity</ThemedText>
-            <Ionicons name="checkmark" size={24} color="white" />
+            <ThemedText style={[styles.primaryBtnText, { color: theme.accentText }]}>Save Activity</ThemedText>
+            <Ionicons name="checkmark" size={24} color={theme.accentText} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(8, 51, 68, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
   },
   modalView: {
     borderTopLeftRadius: 40,
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
     ...Shadows.soft,
@@ -125,7 +123,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 64,
-    backgroundColor: '#ffffff',
     borderRadius: 24, // Nested per spec
     paddingHorizontal: 20,
     fontSize: 18,
@@ -140,10 +137,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     marginTop: 8,
-    ...Shadows.cyan,
+    ...Shadows.glow,
   },
   primaryBtnText: {
-    color: '#ffffff',
     fontSize: 18,
     fontFamily: 'Nunito_900Black',
   },

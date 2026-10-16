@@ -1,14 +1,17 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { Colors, Shadows } from '@/constants/theme';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
-interface ThemeContextType {
+export interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
   isDark: boolean;
+  colors: typeof Colors.light;
+  shadows: typeof Shadows;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
@@ -18,9 +21,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const isDark = theme === 'dark';
+  const colors = Colors[theme];
+  const shadows = Shadows;
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDark }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isDark, colors, shadows }}>
       {children}
     </ThemeContext.Provider>
   );

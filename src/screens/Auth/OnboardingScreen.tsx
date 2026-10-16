@@ -1,26 +1,23 @@
 import React from 'react';
 import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
-import { Colors, Spacing, Typography, Fonts, Shadows, BorderRadius } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import GoogleLogin from '@/components/specific/GoogleLogin';
-import { RevealUp } from '@/components/common/reveal-up';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { Stack } from 'expo-router';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function OnboardingScreen() {
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
   const { setGoogleToken } = useAuth();
   const router = useRouter();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   const handleLoginSuccess = async (token: string) => {
     await setGoogleToken(token);
@@ -31,7 +28,7 @@ export default function OnboardingScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient
-        colors={isDark ? ['#020617', '#0f172a'] : ['#ffffff', '#f8fafc']}
+        colors={[theme.background, theme.surface]}
         style={StyleSheet.absoluteFill}
       />
       
@@ -39,7 +36,7 @@ export default function OnboardingScreen() {
         <View style={styles.topSection}>
           <Animated.View entering={FadeInDown.delay(200).duration(800)} style={styles.header}>
             <ThemedText style={[styles.welcomeLabel, { color: theme.textSecondary }]}>Welcome to</ThemedText>
-            <ThemedText style={[styles.brandTitle, { color: theme.primary }]}>Time Lineup</ThemedText>
+            <ThemedText style={[styles.brandTitle, { color: theme.primary }]}>Maxpine Flow</ThemedText>
             <View style={[styles.titleUnderline, { backgroundColor: theme.accent }]} />
           </Animated.View>
 

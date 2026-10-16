@@ -1,55 +1,64 @@
-import { Platform } from 'react-native';
-
-/**
- * Design System Constants
- * Style: Nexus.One Gradient Fusion Theme
- */
 
 export const Colors = {
-  // Light theme with white background per user request
   light: {
-    primary: '#020617', // Deep slate/black
-    accent: '#06b6d4', // Bright cyan
-    secondary: '#14b8a6', // Soft teal
-    tertiary: '#10b981', // Emerald green
-    background: '#ffffff', // Pure white
-    surface: '#ffffff', // White surface
+    primary: '#0F172A', 
+    accent: '#16c3c6', 
+    secondary: '#5f78bd', 
+    tertiary: '#60A5FA', 
+    background: '#e8f3f5', 
+    surface: '#ecf7f7', 
+    card: '#fcfcfe',
     
-    // UI Helpers
-    text: '#020617', // Dark text for white background
-    textSecondary: '#64748b', // Muted slate
-    textTertiary: '#94a3b8', // Darker slate
-    border: 'rgba(0, 0, 0, 0.08)',
-    glass: 'rgba(255, 255, 255, 0.8)',
-    glassBorder: 'rgba(0, 0, 0, 0.1)',
+    // UI Helpers & Text
+    text: '#0F172A', 
+    textSecondary: '#64748B', 
+    textTertiary: '#94A3B8', 
+    border: 'rgba(37, 99, 235, 0.12)', 
+    glass: 'rgba(255, 255, 255, 0.88)',
+    glassBorder: 'rgba(37, 99, 235, 0.18)',
+    accentText: '#FFFFFF', 
+    
+    // Dynamic Tints
+    tint08: 'rgba(37, 99, 235, 0.08)',
+    tint12: 'rgba(37, 99, 235, 0.12)',
+    tint18: 'rgba(37, 99, 235, 0.18)',
+    tint35: 'rgba(37, 99, 235, 0.35)',
     
     // Status
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#06b6d4',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#EF4444',
+    info: '#2563EB',
   },
   dark: {
-    primary: '#ffffff', // High contrast for active icons/titles
-    accent: '#06b6d4', // Bright cyan
-    secondary: '#14b8a6', // Soft teal
-    tertiary: '#10b981', // Emerald green
-    background: '#020617', // Deep slate
-    surface: '#0f172a', // Slightly elevated slate for cards
+    primary: '#F8FAFC', 
+    accent: '#38BDF8', 
+    secondary: '#2563EB', 
+    tertiary: '#93C5FD', 
+    background: '#070D18', 
+    surface: '#0F1A2E', 
+    card: '#0F1A2E',
     
-    // UI Helpers
-    text: '#f1f5f9', // Light slate
-    textSecondary: '#94a3b8', // Muted slate
-    textTertiary: '#64748b', // Darker slate
-    border: 'rgba(255, 255, 255, 0.1)', // Crisp white border
-    glass: 'rgba(15, 23, 42, 0.6)', // Proper dark glass
-    glassBorder: 'rgba(255, 255, 255, 0.1)',
+    // UI Helpers & Text
+    text: '#F8FAFC', 
+    textSecondary: '#94A3B8', 
+    textTertiary: '#64748B', 
+    border: 'rgba(56, 189, 248, 0.16)', 
+    glass: 'rgba(15, 26, 46, 0.82)', 
+    glassBorder: 'rgba(56, 189, 248, 0.22)',
+    accentText: '#070D18', 
+    
+    // Dynamic Tints
+    tint08: 'rgba(56, 189, 248, 0.08)',
+    tint12: 'rgba(56, 189, 248, 0.12)',
+    tint18: 'rgba(56, 189, 248, 0.18)',
+    tint35: 'rgba(56, 189, 248, 0.35)',
     
     // Status
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#06b6d4',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#F87171',
+    info: '#38BDF8',
   }
 };
 
@@ -78,6 +87,7 @@ export const Fonts = {
   regular: 'Satoshi-Regular',
   medium: 'Satoshi-Medium',
   bold: 'Satoshi-Bold',
+  black: 'Satoshi-Black',
   display: 'ClashGrotesk-Medium',
   displayBold: 'ClashGrotesk-Bold',
   mono: 'SpaceGrotesk-Regular',
@@ -136,30 +146,51 @@ export const Typography = {
 
 export const Shadows = {
   soft: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
+    shadowColor: Colors.light.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
     shadowRadius: 16,
     elevation: 4,
   },
-  cyan: { // Glow effect
-    shadowColor: '#06b6d4',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
+  glow: { // Signature dynamic accent glow
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  accent: {
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  gold: { // Backward compatibility alias
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
+  },
+  cyan: { // Backward compatibility alias
+    shadowColor: Colors.light.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
     elevation: 8,
   },
   sm: {
-    shadowColor: '#000000',
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
   strong: {
-    shadowColor: '#000000',
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.22,
     shadowRadius: 32,
     elevation: 12,
   }

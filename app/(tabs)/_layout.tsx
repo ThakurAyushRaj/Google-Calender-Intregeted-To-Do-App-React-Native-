@@ -1,14 +1,17 @@
 import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Colors, Spacing, BorderRadius, Shadows } from '@/constants/theme';
+import { BorderRadius, Shadows, Fonts } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 
+import { ScalePressable } from '@/components/common/ScalePressable';
+
 export default function TabLayout() {
-  const { theme: currentTheme, isDark } = useAppTheme();
-  const theme = Colors[currentTheme];
+  const { colors: theme } = useAppTheme();
+  const insets = useSafeAreaInsets();
   const router = useRouter();
 
   return (
@@ -19,13 +22,21 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: [
           styles.tabBar,
-          { backgroundColor: theme.surface, borderColor: theme.border }
+          {
+            backgroundColor: theme.surface,
+            borderColor: theme.border,
+            bottom: Math.max(insets.bottom, 16),
+            left: Math.max(insets.left, 16),
+            right: Math.max(insets.right, 16),
+            start: Math.max(insets.left, 16),
+            end: Math.max(insets.right, 16),
+          }
         ],
         tabBarShowLabel: true,
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontFamily: 'Satoshi-Medium',
-          marginBottom: 4,
+          fontSize: 11,
+          fontFamily: Fonts.medium,
+          marginBottom: 2,
         },
       }}>
       <Tabs.Screen
@@ -54,13 +65,13 @@ export default function TabLayout() {
           tabBarLabel: () => null,
           tabBarButton: () => (
             <View style={styles.fabWrapper}>
-               <TouchableOpacity 
-                style={[styles.fab, { backgroundColor: '#ffffff', borderColor: theme.surface }]} 
+               <ScalePressable 
+                style={[styles.fab, { backgroundColor: theme.surface, borderColor: theme.border }]} 
                 onPress={() => router.push('/task-entry')}
-                activeOpacity={0.9}
+                hapticType="heavy"
                >
                  <Ionicons name="add" size={32} color={theme.accent} />
-               </TouchableOpacity>
+               </ScalePressable>
             </View>
           ),
         }}
@@ -92,15 +103,13 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    bottom: 24,
-    left: 20,
-    right: 20,
-    height: 75,
-    paddingBottom: 10,
+    height: 70,
+    paddingBottom: 8,
     paddingTop: 8,
-    borderRadius: BorderRadius.xl,
+    paddingHorizontal: 8,
+    borderRadius: BorderRadius.lg,
     borderWidth: 1,
-    elevation: 8,
+    borderTopWidth: 1,
     ...Shadows.soft,
   },
   fabWrapper: {
@@ -109,14 +118,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   fab: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    top: -20, 
-    borderWidth: 4,
-    ...Shadows.cyan,
+    top: -16, 
+    borderWidth: 3,
+    ...Shadows.glow,
     zIndex: 1000,
   },
 });

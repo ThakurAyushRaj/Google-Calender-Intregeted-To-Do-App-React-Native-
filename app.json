@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Time Lineup",
+    "name": "Maxpine Flow",
     "slug": "time-lineup",
     "owner": "rajayush",
     "version": "1.0.0",
@@ -8,16 +8,14 @@
     "icon": "./src/assets/images/appicon.png",
     "scheme": "time-lineup",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#020617",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./src/assets/images/appicon.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.rajayush.timelineup",
       "permissions": ["SCHEDULE_EXACT_ALARM", "VIBRATE"]
@@ -34,9 +32,9 @@
           "image": "./src/assets/images/appicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#020617",
+          "backgroundColor": "#FFFFFF",
           "dark": {
-            "backgroundColor": "#020617"
+            "backgroundColor": "#FFFFFF"
           }
         }
       ],
@@ -47,20 +45,7 @@
         "expo-notifications",
         {
           "icon": "./src/assets/images/appicon.png",
-          "color": "#06b6d4"
-        }
-      ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/ClashGrotesk-Medium.ttf",
-            "./assets/fonts/ClashGrotesk-Bold.ttf",
-            "./assets/fonts/Satoshi-Regular.ttf",
-            "./assets/fonts/Satoshi-Medium.ttf",
-            "./assets/fonts/Satoshi-Bold.ttf",
-            "./assets/fonts/SpaceGrotesk-Regular.ttf"
-          ]
+          "color": "#2563EB"
         }
       ]
     ],

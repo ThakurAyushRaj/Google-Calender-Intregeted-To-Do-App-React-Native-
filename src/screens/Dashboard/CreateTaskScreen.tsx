@@ -23,7 +23,7 @@ import Animated, {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BlurView } from 'expo-blur';
 
-import { Colors, Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, Typography, Fonts, Shadows } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 import { useTasks } from '@/context/TaskContext';
 import { ThemedText } from '@/components/common/themed-text';
@@ -43,8 +43,7 @@ interface Subtask {
 
 // --- Components ---
 const SectionTitle = ({ title, icon }: { title: string; icon: any }) => {
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
   return (
     <View style={styles.sectionHeader}>
       <View style={[styles.sectionIconContainer, { backgroundColor: theme.accent + '1a' }]}>
@@ -69,7 +68,7 @@ const Chip = ({ label, selected, onPress }: { label: string; selected: boolean; 
 
 export default function AdvancedCreateTaskScreen() {
   const router = useRouter();
-  const { isDark } = useAppTheme();
+  const { isDark, colors: theme } = useAppTheme();
   const { addTask } = useTasks();
   const insets = useSafeAreaInsets();
 
@@ -328,7 +327,7 @@ export default function AdvancedCreateTaskScreen() {
                     ]}
                   >
                     <View style={[styles.priorityDot, { backgroundColor: p === 'High' ? theme.accent : p === 'Medium' ? theme.warning : theme.success }]} />
-                    <ThemedText style={[styles.priorityBtnText, priority === p && { color: p === 'High' ? 'white' : theme.text }]}>
+                    <ThemedText style={[styles.priorityBtnText, priority === p && { color: p === 'High' ? theme.accentText : theme.text }]}>
                       {p}
                     </ThemedText>
                   </TouchableOpacity>
@@ -385,7 +384,7 @@ export default function AdvancedCreateTaskScreen() {
                   onSubmitEditing={addSubtask}
                 />
                 <TouchableOpacity onPress={addSubtask} style={[styles.addSubtaskBtn, { backgroundColor: theme.accent }]}>
-                  <Ionicons name="add" size={24} color="white" />
+                  <Ionicons name="add" size={24} color={theme.accentText} />
                 </TouchableOpacity>
               </View>
             </View>

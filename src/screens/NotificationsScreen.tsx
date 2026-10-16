@@ -1,29 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Typography, Fonts, Shadows, BorderRadius } from '@/constants/theme';
+import { Spacing, Fonts, Shadows, BorderRadius } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { RevealUp } from '@/components/common/reveal-up';
 import * as Notifications from 'expo-notifications';
-import { useState, useEffect } from 'react';
 
 export default function NotificationsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { isDark, colors: theme } = useAppTheme();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const scheduled = await Notifications.getAllScheduledNotificationsAsync();
       const formatted = scheduled.map(n => {
@@ -65,7 +59,12 @@ export default function NotificationsScreen() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const cancelAllNotifications = async () => {
     await Notifications.cancelAllScheduledNotificationsAsync();
@@ -115,7 +114,7 @@ export default function NotificationsScreen() {
                 { backgroundColor: theme.surface, borderColor: theme.border },
               ]}
             >
-              <View style={[styles.iconContainer, { backgroundColor: isDark ? 'rgba(6, 182, 212, 0.15)' : 'rgba(6, 182, 212, 0.08)' }]}>
+              <View style={[styles.iconContainer, { backgroundColor: theme.tint12 }]}>
                 <Ionicons 
                   name="alarm" 
                   size={22} 

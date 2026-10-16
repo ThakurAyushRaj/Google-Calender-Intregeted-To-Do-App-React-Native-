@@ -4,7 +4,7 @@ import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Typography, Fonts, Shadows, BorderRadius } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { RevealUp } from '@/components/common/reveal-up';
@@ -12,24 +12,23 @@ import { RevealUp } from '@/components/common/reveal-up';
 export default function AboutScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { colors: theme } = useAppTheme();
 
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background }]}>
+      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background, borderBottomColor: theme.border }]}>
         <View style={styles.headerContent}>
           <TouchableOpacity 
             onPress={() => router.back()} 
-            style={[styles.backButton, { backgroundColor: theme.surface }]}
+            style={[styles.backButton, { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border }]}
           >
             <Ionicons name="arrow-back" size={24} color={theme.text} />
           </TouchableOpacity>
           <View style={styles.titleWrapper}>
-            <ThemedText style={styles.headerTitleText}>About</ThemedText>
+            <ThemedText style={[styles.headerTitleText, { color: theme.primary }]}>About</ThemedText>
           </View>
           <View style={{ width: 44 }} />
         </View>
@@ -49,47 +48,47 @@ export default function AboutScreen() {
                 resizeMode="contain"
               />
             </View>
-            <ThemedText style={styles.appName}>Time Lineup</ThemedText>
-            <ThemedText style={styles.appVersion}>Version 1.0.0</ThemedText>
+            <ThemedText style={[styles.appName, { color: theme.primary }]}>Maxpine Flow</ThemedText>
+            <ThemedText style={[styles.appVersion, { color: theme.textSecondary }]}>Version 1.0.0</ThemedText>
           </View>
         </RevealUp>
 
         <RevealUp delay={200}>
           <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-            <ThemedText style={styles.cardTitle}>Our Mission</ThemedText>
-            <ThemedText style={styles.cardText}>
-              Time Lineup is designed to simplify your daily planning. By seamlessly integrating with your Google Calendar, we provide a unified view of your commitments and tasks, helping you achieve more every day.
+            <ThemedText style={[styles.cardTitle, { color: theme.primary }]}>Our Mission</ThemedText>
+            <ThemedText style={[styles.cardText, { color: theme.textSecondary }]}>
+              Maxpine Flow is designed to simplify your daily planning. By seamlessly integrating with your Google Calendar, we provide a unified view of your commitments and tasks, helping you achieve more every day.
             </ThemedText>
           </View>
         </RevealUp>
 
         <RevealUp delay={300}>
           <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-            <ThemedText style={styles.cardTitle}>Key Features</ThemedText>
+            <ThemedText style={[styles.cardTitle, { color: theme.primary }]}>Key Features</ThemedText>
             <View style={styles.featureList}>
               <View style={styles.featureItem}>
                 <Ionicons name="sync" size={18} color={theme.accent} />
-                <ThemedText style={styles.featureText}>Real-time Google Calendar Sync</ThemedText>
+                <ThemedText style={[styles.featureText, { color: theme.textSecondary }]}>Real-time Google Calendar Sync</ThemedText>
               </View>
               <View style={styles.featureItem}>
                 <Ionicons name="stats-chart" size={18} color={theme.accent} />
-                <ThemedText style={styles.featureText}>Visual Progress Tracking</ThemedText>
+                <ThemedText style={[styles.featureText, { color: theme.textSecondary }]}>Visual Progress Tracking</ThemedText>
               </View>
               <View style={styles.featureItem}>
                 <Ionicons name="notifications" size={18} color={theme.accent} />
-                <ThemedText style={styles.featureText}>Smart Task Reminders</ThemedText>
+                <ThemedText style={[styles.featureText, { color: theme.textSecondary }]}>Smart Task Reminders</ThemedText>
               </View>
               <View style={styles.featureItem}>
                 <Ionicons name="color-palette" size={18} color={theme.accent} />
-                <ThemedText style={styles.featureText}>Premium Dark & Light Modes</ThemedText>
+                <ThemedText style={[styles.featureText, { color: theme.textSecondary }]}>Premium Dark & Light Modes</ThemedText>
               </View>
             </View>
           </View>
         </RevealUp>
 
         <View style={styles.footer}>
-          <ThemedText style={styles.footerText}>Made for increase your productivity</ThemedText>
-          <ThemedText style={styles.copyright}>© 2026 Time Lineup Inc.</ThemedText>
+          <ThemedText style={[styles.footerText, { color: theme.textSecondary }]}>Made to increase your productivity</ThemedText>
+          <ThemedText style={[styles.copyright, { color: theme.textSecondary, opacity: 0.5 }]}>© 2026 Maxpine Flow Inc.</ThemedText>
         </View>
       </ScrollView>
     </ThemedView>
@@ -98,7 +97,7 @@ export default function AboutScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(23, 30, 25, 0.05)' },
+  headerContainer: { zIndex: 100, borderBottomWidth: 1 },
   headerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, height: 64 },
   titleWrapper: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   headerTitleText: { fontSize: 20, fontFamily: Fonts.black, textAlign: 'center' },

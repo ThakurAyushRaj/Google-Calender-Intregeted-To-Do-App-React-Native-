@@ -4,30 +4,38 @@ import { Stack, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/context/ThemeContext';
-import { Colors, Spacing, Typography, Fonts, Shadows, BorderRadius } from '@/constants/theme';
+import { Spacing, Fonts, Shadows } from '@/constants/theme';
 import { ThemedText } from '@/components/common/themed-text';
 import { ThemedView } from '@/components/common/themed-view';
 import { RevealUp } from '@/components/common/reveal-up';
 
-export default function PrivacySecurityScreen() {
-  const router = useRouter();
-  const insets = useSafeAreaInsets();
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+interface SecuritySectionProps {
+  title: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  content: string;
+  theme: any;
+}
 
-  const SecuritySection = ({ title, icon, content }: { title: string, icon: any, content: string }) => (
+function SecuritySection({ title, icon, content, theme }: SecuritySectionProps) {
+  return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <View style={[styles.iconBox, { backgroundColor: theme.accent + '15' }]}>
           <Ionicons name={icon} size={20} color={theme.accent} />
         </View>
-        <ThemedText style={styles.sectionTitle}>{title}</ThemedText>
+        <ThemedText style={[styles.sectionTitle, { color: theme.primary }]}>{title}</ThemedText>
       </View>
       <View style={[styles.contentCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-        <ThemedText style={styles.contentText}>{content}</ThemedText>
+        <ThemedText style={[styles.contentText, { color: theme.textSecondary }]}>{content}</ThemedText>
       </View>
     </View>
   );
+}
+
+export default function PrivacySecurityScreen() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { colors: theme } = useAppTheme();
 
   return (
     <ThemedView style={styles.container}>
@@ -36,16 +44,16 @@ export default function PrivacySecurityScreen() {
       }} />
 
       {/* Header */}
-      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background }]}>
+      <View style={[styles.headerContainer, { paddingTop: Math.max(insets.top, 16), backgroundColor: theme.background, borderBottomColor: theme.border }]}>
         <View style={styles.headerContent}>
           <TouchableOpacity 
             onPress={() => router.back()} 
-            style={[styles.backButton, { backgroundColor: theme.surface }]}
+            style={[styles.backButton, { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border }]}
           >
             <Ionicons name="arrow-back" size={24} color={theme.text} />
           </TouchableOpacity>
           <View style={styles.titleWrapper}>
-            <ThemedText style={styles.headerTitleText}>Privacy & Security</ThemedText>
+            <ThemedText style={[styles.headerTitleText, { color: theme.primary }]}>Privacy & Security</ThemedText>
           </View>
           <View style={{ width: 44 }} />
         </View>
@@ -60,7 +68,8 @@ export default function PrivacySecurityScreen() {
           <SecuritySection 
             title="Google Calendar Integration" 
             icon="calendar-outline" 
-            content="Time Lineup syncs with your Google Calendar to help you manage your schedule. We only request permissions to read and create events in your calendar. Your data is never stored on external servers; it remains between your device and Google."
+            content="Maxpine Flow syncs with your Google Calendar to help you manage your schedule. We only request permissions to read and create events in your calendar. Your data is never stored on external servers; it remains between your device and Google."
+            theme={theme}
           />
         </RevealUp>
 
@@ -69,6 +78,7 @@ export default function PrivacySecurityScreen() {
             title="Data Protection" 
             icon="shield-checkmark-outline" 
             content="Your authentication tokens and personal task data are stored locally on your device using encrypted storage. We do not track your location or sell your personal information to third parties."
+            theme={theme}
           />
         </RevealUp>
 
@@ -77,6 +87,7 @@ export default function PrivacySecurityScreen() {
             title="App Permissions" 
             icon="key-outline" 
             content="The app requires Notification permissions to remind you of upcoming tasks. Calendar access is used only to show and sync your schedule. You can manage these permissions at any time through your device settings."
+            theme={theme}
           />
         </RevealUp>
 
@@ -85,11 +96,12 @@ export default function PrivacySecurityScreen() {
             title="Security Features" 
             icon="lock-closed-outline" 
             content="We use industry-standard OAuth 2.0 protocols for Google Sign-In, ensuring that your password is never shared with us. Secure Store is used to maintain your session integrity safely."
+            theme={theme}
           />
         </RevealUp>
 
         <View style={styles.footerInfo}>
-          <ThemedText style={styles.footerText}>Time Lineup v1.0.0</ThemedText>
+          <ThemedText style={[styles.footerText, { color: theme.textSecondary, opacity: 0.5 }]}>Maxpine Flow v1.0.0</ThemedText>
         </View>
       </ScrollView>
     </ThemedView> 
@@ -98,7 +110,7 @@ export default function PrivacySecurityScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  headerContainer: { zIndex: 100, borderBottomWidth: 1, borderBottomColor: 'rgba(23, 30, 25, 0.05)' },
+  headerContainer: { zIndex: 100, borderBottomWidth: 1 },
   headerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, height: 64 },
   titleWrapper: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   headerTitleText: { fontSize: 20, fontFamily: Fonts.black, textAlign: 'center' },

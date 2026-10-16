@@ -3,15 +3,14 @@ import { StyleSheet, TouchableOpacity, View, ActivityIndicator } from "react-nat
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@/context/ThemeContext";
-import { Colors, Fonts, Shadows, Spacing, BorderRadius } from "@/constants/theme";
+import { Fonts, Shadows, Spacing, BorderRadius } from "@/constants/theme";
 import { ThemedText } from "@/components/common/themed-text";
 import * as Haptics from "expo-haptics";
 import { useAuth } from "@/context/AuthContext";
 
 export default function GoogleLogin({ onSuccess }: { onSuccess?: (token: string) => void }) {
-  const { isDark } = useAppTheme();
+  const { colors: theme } = useAppTheme();
   const { setGoogleToken, setUserName, setUserImage, googleToken } = useAuth();
-  const theme = Colors[isDark ? "dark" : "light"];
   const [isLoading, setIsLoading] = useState(false);
 
   const accessToken = googleToken;

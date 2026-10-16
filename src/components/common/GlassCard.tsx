@@ -1,16 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors, BorderRadius } from '@/constants/theme';
+import { useAppTheme } from '@/context/ThemeContext';
+import { BorderRadius } from '@/constants/theme';
 
 interface GlassCardProps extends ViewProps {
   intensity?: number;
 }
 
 export function GlassCard({ children, style, intensity = 60, ...props }: GlassCardProps) {
-  const colorScheme = useColorScheme() ?? 'light';
-  const theme = Colors[colorScheme];
+  const { theme: colorScheme, colors: theme } = useAppTheme();
 
   return (
     <View style={[styles.container, { borderColor: theme.glassBorder, backgroundColor: theme.glass }, style]} {...props}>

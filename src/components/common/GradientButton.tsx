@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps, Animated, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, BorderRadius, Shadows, Typography, Animations } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { BorderRadius, Shadows, Typography } from '@/constants/theme';
+import { useAppTheme } from '@/context/ThemeContext';
 import { ThemedText } from './themed-text';
 
 interface GradientButtonProps extends TouchableOpacityProps {
@@ -11,10 +11,9 @@ interface GradientButtonProps extends TouchableOpacityProps {
 }
 
 export function GradientButton({ title, icon, style, ...props }: GradientButtonProps) {
-  const colorScheme = useColorScheme() ?? 'light';
-  const theme = Colors[colorScheme];
+  const { colors: theme } = useAppTheme();
   
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const [scaleAnim] = React.useState(() => new Animated.Value(1));
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
@@ -46,7 +45,7 @@ export function GradientButton({ title, icon, style, ...props }: GradientButtonP
           style={styles.gradient}
         >
           {icon && <View style={styles.iconContainer}>{icon}</View>}
-          <ThemedText style={styles.title}>{title}</ThemedText>
+          <ThemedText style={[styles.title, { color: theme.accentText }]}>{title}</ThemedText>
         </LinearGradient>
       </TouchableOpacity>
     </Animated.View>
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: BorderRadius.xl, // 2rem/32px per spec for CTA buttons
     overflow: 'hidden',
-    ...Shadows.cyan,
+    ...Shadows.glow,
   },
   gradient: {
     flexDirection: 'row',
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
   title: {
     ...Typography.body,
     fontFamily: 'Satoshi-Bold',
-    color: '#020617', // Dark text on bright cyan gradient
     fontSize: 16,
   },
   iconContainer: {

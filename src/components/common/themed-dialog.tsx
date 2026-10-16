@@ -3,7 +3,6 @@ import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from './themed-text';
-import { Colors } from '@/constants/theme';
 import { useAppTheme } from '@/context/ThemeContext';
 
 interface CustomAlertProps {
@@ -25,8 +24,7 @@ export function CustomAlert({
   confirmText = 'OK',
   cancelText = 'Cancel',
 }: CustomAlertProps) {
-  const { isDark } = useAppTheme();
-  const theme = Colors[isDark ? 'dark' : 'light'];
+  const { isDark, colors: theme } = useAppTheme();
 
   return (
     <Modal
@@ -63,7 +61,7 @@ export function CustomAlert({
               }}
               style={[styles.button, { backgroundColor: theme.accent }]}
             >
-              <ThemedText style={[styles.buttonText, { color: 'white' }]}>{confirmText}</ThemedText>
+              <ThemedText style={[styles.buttonText, { color: theme.accentText }]}>{confirmText}</ThemedText>
             </TouchableOpacity>
           </View>
         </View>

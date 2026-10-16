@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, BorderRadius, Shadows } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { BorderRadius, Shadows } from '@/constants/theme';
+import { useAppTheme } from '@/context/ThemeContext';
 import { ThemedText } from './themed-text';
 
 interface ListItemProps extends TouchableOpacityProps {
@@ -13,8 +13,7 @@ interface ListItemProps extends TouchableOpacityProps {
 }
 
 export function ListItem({ title, subtitle, icon, rightElement, style, ...props }: ListItemProps) {
-  const colorScheme = useColorScheme() ?? 'light';
-  const theme = Colors[colorScheme];
+  const { colors: theme } = useAppTheme();
 
   return (
     <TouchableOpacity 
